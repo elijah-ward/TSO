@@ -1,0 +1,6 @@
+name: tso
+dependencies:
+    - astropy
+    - numpy
+    - deap
+    - pyqt5
