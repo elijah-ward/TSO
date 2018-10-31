@@ -20,19 +20,19 @@ conda create -f environment.yml
 
 #### Switching Environments Created Using Conda
 
-*MacOS/Linux*
+**MacOS/Linux**
 ```
 source activate tso
 ```
-*Windows*
+**Windows**
 ```
 activate tso
 ```
 
 ## Maintainers
 
-- Sebastian Lopez
-- Gustavo Andres Murcia
-- Kirk Vander Ploeg
-- Elijah Ward
+- [Sebastian Lopez](https://github.com/se95lopez)
+- [Gustavo Andres Murcia](https://github.com/GAUNSD)
+- [Kirk Vander Ploeg](https://github.com/Kirk-V)
+- [Elijah Ward](https://github.com/elijah-ward)
 
