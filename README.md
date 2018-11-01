@@ -1,5 +1,7 @@
 # Telescope Schedule Optimizer (TSO)
 
+![TSO](https://github.com/elijah-ward/TSO/blob/master/images/TSO.png "TSO")
+
 TSO is a scheduling tool written in Python for use by astronomical researchers in order to consider a wide variety of constraints and attempt to produce an optimal observation schedule.
 
 ## Getting Started
