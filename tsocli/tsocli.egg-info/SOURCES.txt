@@ -1,0 +1,10 @@
+README.md
+tsocli/__init__.py
+tsocli/__main__.py
+tsocli/classmodule.py
+tsocli/funcmodule.py
+tsocli.egg-info/PKG-INFO
+tsocli.egg-info/SOURCES.txt
+tsocli.egg-info/dependency_links.txt
+tsocli.egg-info/entry_points.txt
+tsocli.egg-info/top_level.txt

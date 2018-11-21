@@ -1,0 +1,3 @@
+[console_scripts]
+tsocli = tsocli.__main__:main
+
