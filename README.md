@@ -1,4 +1,6 @@
 # Telescope Schedule Optimizer (TSO)
+## Observe freely :)
+
 
 <p align="center">
 <img align="center" src="https://github.com/elijah-ward/TSO/blob/master/images/TSO.png" alt="TSO"/>
