@@ -1,4 +1,4 @@
-from tsocli.src.genetic import Genetic
+import tsocli.src.ga
 
 class Scheduler:
 
