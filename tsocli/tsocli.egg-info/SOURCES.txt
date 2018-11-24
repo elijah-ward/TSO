@@ -1,8 +1,8 @@
 README.md
-tsocli/__init__.py
-tsocli/__main__.py
-tsocli/classmodule.py
-tsocli/funcmodule.py
+src/__init__.py
+src/__main__.py
+src/examples/classmodule.py
+src/examples/funcmodule.py
 tsocli.egg-info/PKG-INFO
 tsocli.egg-info/SOURCES.txt
 tsocli.egg-info/dependency_links.txt

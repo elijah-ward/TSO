@@ -6,6 +6,6 @@ setup(
     packages=['tsocli'],
     entry_points={
         'console_scripts': [
-            'tsocli = tsocli.__main__:main'
+            'tsocli = src.__main__:main'
         ]
     })
