@@ -21,7 +21,7 @@ In this repository there is an `environment.yml` file that contains information 
 #### Creating a New Environment in Conda From an `environment.yml` File
 
 ```
-conda create -f environment.yml
+conda env create -f environment.yml
 ```
 
 #### Switching Environments Created Using Conda
