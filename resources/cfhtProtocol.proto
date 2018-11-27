@@ -1,0 +1,588 @@
+/**
+ * CFHT : ProtoBuf
+ *
+ * The following schema was given by Bill Mahoney as part of describing current CFHT data.
+ */
+
+syntax = "proto3"; //TODO: Assumption...confirm syntax being used
+
+package cfhtProtocol;
+
+message TargetData {
+	// Next ID: 18
+	string token = 1;
+	string name = 2;
+
+	oneof precession_calculation {
+		/* The equinox this targets fixtures.coordinates were found through referenced, the fixtures.coordinates will be updated with precession at observation time. */
+		double reference_equinox_julian_years = 3;
+		/* When true, coordinates are used as is, and precession is not taken into consideration */
+		bool use_apparent_time = 12;
+	}
+
+	message PointingOffset {
+		string pointing_name = 1 [deprecated = true]; // Name isn't going to be valid because it's tied to instrument
+		cfhtapi.types.OffsetCoordinate pointing_offset_coordinate = 2;
+	}
+	
+	PointingOffset pointing_offset = 4;
+	
+	message Magnitude {
+		string magnitude_type = 1; // magab, magh, magv, etc.  TODO: further implementation as a LookupRecord?
+		double magnitude = 2;
+	}
+	Magnitude magnitude = 5 [deprecated=true];
+
+	message ProperMotion {
+		/* RA mas/yr */
+		double ra_mas = 1;
+		/* DEC mili arc seconds /year */
+		double dec_mas = 2;
+	}
+
+	double temperature_effective = 6; // [instrument = [E]] + spirou (any really)
+
+	/* Target at a fixed location.  Not currently implemented */
+	message FixedTarget {
+		/* Coordinate for this target */
+		cfhtapi.types.SkyCoordinate coordinate = 1;
+		ProperMotion proper_motion = 2;
+		cfhtapi.types.SkyCoordinate computed_coordinate = 3;
+	}
+
+	/* Target which moves along a path */
+	message MovingTarget {
+		/* the triplet of time,ra,dec */
+		message Ephemeris {
+			double mjd = 1;
+			cfhtapi.types.SkyCoordinate coordinate = 2;
+			cfhtapi.types.SkyCoordinate computed_coordinate = 3;
+		}
+		repeated Ephemeris ephemeris_point = 1 [json_name ="ephemeris_points"];
+	}
+
+	/* Only one subtype can be used, either a fixed target, or an ephemeris target */
+	oneof target_subtype {
+		FixedTarget fixed_target = 7;
+
+		MovingTarget moving_target = 8 [json_name = "moving_targets"];
+	}
+
+	message FindingChart {
+		string comment = 1;
+		string url = 2;
+	}
+	FindingChart finding_chart = 9;
+
+	/* Any fields here takes presidence over the exposure template */
+	ObservingTemplateData observing_template_mask = 10;
+
+	cfhtapi.types.BigInteger sybase_tar_id = 11 [(cfhtapi.options.scope) = SYBASE_HINT];
+
+	string sybase_tar_label = 14 [(cfhtapi.options.scope) = SYBASE_HINT];
+
+	message Magnitudes {
+		double U = 1;
+		double B = 2;
+		double V = 3;
+		double R = 4;
+		double I = 5;
+		double G = 6;
+		double J = 7;
+		double H = 8;
+		double K = 9;
+		double uu = 10;
+		double gg = 11;
+		double rr_ = 12;
+		double ii = 13;
+		double zz = 14;
+	}
+
+	Magnitudes magnitudes = 15;
+
+	double radial_velocity = 16;
+
+	string two_mass_id = 17;
+}
+
+enum StokesParameter {
+	Q = 0;
+	U = 1;
+	V = 2;
+	W = 3;
+	I = 4;
+}
+
+/* Part of observing_template_data - not stored on any table individually */
+message InstrumentConfiguration {
+	message EspadonsConfiguration {
+		// Namespace here is because in c++ we can't have two enums that have the same name for a value
+		message O {
+			enum ObservingMode {
+				Polarimetry = 0;
+				Spectroscopy_star_only = 1;
+				Spectroscopy_star_sky = 2;
+			}
+		}
+		message R {
+			enum ReadoutMode {
+				Normal = 0;
+				Slow = 1;
+				Fast = 2;
+			}
+		}
+
+		O.ObservingMode observing_mode = 1;
+		R.ReadoutMode readout_mode = 2;
+		StokesParameter stokes_parameter = 3;
+		int32 number_of_sequences = 4;
+		int32 number_of_exposures = 5; // polarimetry gets 4, all othersget 1
+
+		bool needs_snr = 6;
+		double snr_wave = 7;
+		double snr = 8;
+	}
+
+	message SpirouConfiguration {
+		message O {
+			enum ObservingMode {
+				Polarimetry = 0;
+				Star = 1;
+			}
+		}
+		message M {
+			enum Mode {
+				Dark = 0;
+				Fabry_Perot = 1;
+				Wave_Hc1 = 2;
+				Wave_Hc2 = 3;
+				FLAT = 4;
+			}
+		}
+
+		enum SkyObservation {
+			None = 0;
+			Before = 1;
+			After = 2;
+			BeforeAndAfter = 3;
+		}
+
+		string template_name = 1;
+		O.ObservingMode observing_mode = 2;
+		StokesParameter stokes_parameter = 3;
+		M.Mode mode = 4;
+		SkyObservation sky_observation = 5;
+		//int32 number_of_readouts_per_exposure = 6;  //this is a derived field and doesn't need tobe here
+		/** Each sequence is 1 exposure for Star mode and 4 exposures for ObservingMode */
+		int32 number_of_sequences = 6;
+	}
+
+	message MegacamConfiguration {
+		enum Filter {
+			Unknown = 0;
+			u = 1;
+			g = 2;
+			i = 3;
+			r = 4;
+			z = 5;
+			gri = 6;
+			CaHK = 7;
+			Ha = 8;
+			HaOFF = 9;
+			OIII = 10;
+			OIIIOFF = 11;
+			uS = 12;
+			gS = 13;
+			rS = 14;
+			iS = 15;
+			zS = 16;
+			N393S = 17;
+			HaS = 18;
+			HaOFFS = 19;
+			TiOS = 20;
+			CNS = 21;
+			OIIIS = 22;
+			PHGS = 23;
+
+		}
+
+		enum Binning {
+			one_one = 0;
+			two_two = 1;
+			three_three = 2;
+			four_four = 3;
+		}
+
+		Filter filter = 1;
+		Binning binning = 2;
+
+		// TODO: is this needed billy? Can we use presence of snr or not to decide?
+		// I THINK SO.  We have the capability to calculate SNR on every exposure, but we aren't necessarily doing SNR mode observations with everything
+		bool is_dynamic_exposure_time = 3;
+		int32 minimum_exposures = 4;
+		int64 min_exptime_ms = 5;
+		int64 max_exptime_ms = 6;
+		// TODO: interesting field here because associated with the target, but in the legacy mp snr mode, the mag is carried with the IC! so have to go back to this :(
+		double magAB = 7;
+	}
+
+	message WircamConfiguration {
+		enum Filter {
+			UNKNOWN = 0;
+			W = 1;
+			H = 2;
+			J = 3;
+			Ks = 4;
+			Y = 5;
+			H2 = 6;
+			KCont = 7;
+			CH4On = 8;
+			CH4Off = 9;
+			LowOH1 = 10;
+			LowOH2 = 11;
+			BrG = 12;
+			CO = 13;
+			COnar = 14;
+		}
+		Filter filter = 1;
+
+		bool is_microdithering = 2;
+		// Must always be > 0
+		int32 exposures_per_dp_position = 3; // [range 1-12];
+
+		bool accurate_pointing = 4;
+		double defocus = 5;
+		bool is_staring = 6;
+	}
+
+	message SitelleConfiguration {
+		enum Filter {
+			UNKNOWN = 0;
+			NONE = 1;
+			C1 = 2;
+			C2 = 3;
+			C3 = 4;
+			C4 = 5;
+			SN1 = 6;
+			SN2 = 7;
+			SN3 = 8;
+		}
+
+		enum Binning {
+			one_one = 0;
+			two_two = 1;
+			three_three = 2;
+		}
+
+		message Calibration {
+			enum CalibrationPosition {
+				no_calibration_position = 0;
+				zenith = 1;
+				target = 2;
+			}
+
+			CalibrationPosition calibration_position = 1;
+
+			enum CalibrationMode {
+				no_calibration_mode = 0;
+				laser = 1;
+				phase = 2;
+			}
+
+			CalibrationMode calibration_mode = 2;
+		}
+
+		enum ResolutionMode {
+			no_resolution_mode = 0;
+			hires = 1;
+			medres = 2;
+		}
+
+		Filter filter = 1;
+		Binning binning = 2;
+		int32 resolution = 3;
+		/* This should be on target too , sitell, espedons, spirou*/
+		double snrwavelength = 4;
+		Calibration calibration = 5;
+		ResolutionMode resolution_mode = 6;
+
+		bool needs_precision = 7;
+		bool needs_flux_calibration = 8;
+		bool needs_target_calibration = 9;
+	}
+
+	oneof configuration {
+		EspadonsConfiguration espadons_configuration = 2;
+		MegacamConfiguration megacam_configuration = 3;
+		WircamConfiguration wircam_configuration = 4;
+		SitelleConfiguration sitelle_configuration = 5;
+		SpirouConfiguration spirou_configuration = 6;
+	}
+
+	cfhtapi.types.BigInteger sybase_ic_id = 7 [(cfhtapi.options.scope) = SYBASE_HINT];
+
+	ExposureTime etime_or_snr = 8;
+
+	cfhtapi.types.BigInteger sybase_cons_id = 9 [(cfhtapi.options.scope) = SYBASE_HINT];
+
+	enum Tracking {
+		Unknown = 0;
+		SID = 1;
+		NONSID = 2;
+		SID_NOG = 3;
+		NONSID_G = 4;
+	}
+
+	Tracking tracking = 10;
+}
+
+/* Part of observing_template_data - not stored on any table individually */
+message Constraint {
+	cfhtapi.types.DoubleMinMax image_quality = 1;
+	double sky_background_max = 2;
+	double airmass_max = 3;
+	double extinction_max = 4;
+	double moon_distance_arc_length_min = 5;
+
+	bool photometric = 6; // TODO: this goes away because < ~0.1
+	extinction = photometric
+
+	string name = 7;
+
+	cfhtapi.types.BigInteger sybase_cons_id = 8 [(cfhtapi.options.scope) = SYBASE_HINT];
+
+	double h2o_vapor_max = 9;
+	string read_sky_background_name = 10;
+}
+
+/* Part of observing_template_data - not stored on any table individually */
+message TelescopePattern {
+	message Offset {
+		/** 0 indexed identifier, maps directly to this offset's position in TelescopeOffset.offsets */
+		// TODO: deprecate, no need to have duplicate information here.
+		int32 exposure_number = 1;
+		cfhtapi.types.OffsetCoordinate offset = 2;
+		/* For dithering patterns type is always target */
+		cfhtapi.types.ExposureType type = 3;
+	}
+
+	message Config {
+		string name = 1;
+		string description = 2;
+
+		/* Used for calculating cost for this pattern */
+		string charge_model = 3;
+
+		message Dithering {
+			bool is_staring = 1;
+		}
+
+		message Nodding {
+			cfhtapi.types.ExposureType start_sequence = 1;
+			double target_db = 2; /* TODO: I don't know what this is. */
+		}
+
+		oneof patterntype {
+			Dithering dithering = 4;
+			Nodding nodding = 5;
+		}
+
+		double scale = 6;
+		cfhtapi.types.BigInteger sybase_pat_id = 7 [(cfhtapi.options.scope) = SYBASE_HINT];
+		bool is_system = 8;
+	}
+
+	// Should only be set if manually specifying custom dithering patterns
+	repeated Offset offsets = 1;
+
+	Config config = 2;
+}
+/*
+// TODO: allow user to specify a SystemTelescopeOffset, or some model
+like this in config
+message SystemTelescopeOffset {
+	enum Megacam {
+		single = 1 [(TelescopeOffset) = {
+			offsets: [],
+			config: {    }
+		}]
+	};
+}
+*/
+/* Stored in observing_templates table in column observing_template_data
+*/
+message ObservingTemplateData {
+	// Next available ID 13
+	InstrumentConfiguration instrument_configuration = 1;
+	Constraint constraint = 2;
+
+	TelescopePattern telescope_pattern = 3 [json_name = "telescope_offset"];
+
+	/* Used for calculating cost for this pattern
+	* Invokes code which reads the ExposureInstructions and
+	* attributes a cost to it.
+	*/
+	string charge_model = 4;
+
+	/* don't know why these are strings but changing to int64 and they are in MILLISECONDS*/
+
+	/* ITME = etime + overhead */
+	// string itime_seconds = 5;
+
+	/* If SNR is being used, this is calculated for average conditions */
+	//string calculated_exposure_time_seconds = 6;
+
+	int64 itime = 5;
+
+	/* should be the ExposureTime message to handle the SNR calculation as well */
+	//int calculated_etime = 6;  /* from the ETC, can be different than the input etime */
+	ExposureTime calculate_etime = 6;
+
+	/* SNR or E-Time per exposure  => therefore we do not need the ExposureTime message in each IC? question above as well */
+	ExposureTime acquisition_time = 7;
+
+	/*
+	 * This should be in the instrument config
+	 *
+	enum Tracking {
+		Unknown = 0;
+		SID = 1;
+		NONSID = 2;
+		SID_NOG = 3;
+		NONSID_G = 4;
+	}
+	Tracking tracking = 9;
+	*/
+
+	string token = 8;
+
+	/**
+	 * When just creating an OT, this list is empty
+	 * When this OT belongs to an OG, then any OBs in sybase that this OT is related too must be filled in.
+	 * select * from blah where (select id from prg where prg
+	 * Query to find related OBs is, select ob.* from ob, prg where ob.prg_id = prg.id and prg.runid=?    
+	 * instrument_configuration.sybase_ic_id, constraint.sybase_cons_id
+
+	 select ob.* from ob, prg, icseq where ob.prg_id = prg.id
+		and prg.runid=<runid>
+		and icseq.ob_id=ob.id and ob.con_id = <constraint.sybase_cons_id>
+		and icseq.ic_id = <instrument_configuration.sybase_ic_id>;
+	 */
+	repeated cfhtapi.types.BigInteger associated_observing_blocks = 9 [(cfhtapi.options.scope) = SYBASE_HINT];
+
+	string name = 10;
+
+	/**
+	 * Number of exposures needed for validation,
+	 * Calculated by the ExposureConfigurationService
+	 *
+	 * this is a derived field and should not be set
+	 */
+
+	int32 total_exposure_count = 11; // [derived = true];
+}
+
+/* Stored in observing_blocks table in column observing_block_data */
+message ObservingBlockData {
+	string token = 1;
+	double max_iq_tolerance_percentage = 2; // float between 0 and 1
+
+	cfhtapi.types.BigInteger sybase_ob_id = 3 [(cfhtapi.options.scope) = SYBASE_HINT];
+
+	SubTotalsData subTotals = 4;
+}
+
+message Reel {
+	message Condition {
+		message Requisite {
+			/**
+			 * Required,
+			 */
+			string requisite_observing_block_token = 2 [deprecated = true];
+
+			/**
+			 * This should match the position of the observing block in the repeated observing_block list.
+			 */
+			int32 requisite_observing_block_index = 11;
+
+			/* Minimum Time to wait after the requisite_ob exposure has been taken */
+			int64 wait_period_min_millis = 3;
+
+			oneof wait_max {
+				/* Maximum Time to wait after the requisite_ob exposure has been taken */
+				int64 wait_period_max_millis = 4;
+
+				/* If true, then this observation can happen any time after the requisite */
+				bool unbounded = 5;
+			}
+
+			oneof camera_run {
+				/* How important is this? */
+				bool seperate_camera_run = 9;
+				/* If true, must be in the same camera run */
+				bool same_camera_run = 10;
+			}
+		}
+
+		message Window {
+			int64 observe_after = 5;
+			int64 observe_before = 6;
+		}
+
+		/*
+		 */
+		repeated Requisite requisite = 1 [json_name = "pre_requisite"];
+
+		/*
+		 * This window is just scheduling constraints for when you want observations to be made,
+		 * When calculating expires_at for this OB, the window will be used masked by the target visibility
+		 * which is calculated from airmass & RA/DEC
+		 *
+		 * Windows can not overlap, and will always be stored in order from now to future.
+		 */
+		repeated Window window = 2;
+	}
+
+	message ObservingBlock {
+		string observing_block_token = 1;
+
+		Condition condition = 2;
+	}
+
+	/* Order matches the configuration list */
+	repeated ObservingBlock observing_block = 1;
+
+	message Configuration {
+		message Standard {
+			string empty = 1;
+		}
+
+		message Monitor {
+			int32 number_of_iterations = 1;
+			int32 minimum_number_of_iterations = 2;
+			int64 wait_between_observations_millis = 3;
+			int64 wait_tolerance = 4;
+		}
+
+		oneof configuration {
+			Standard standard = 1 [deprecated = true];
+			// more
+
+			bool single = 2;
+			Monitor monitor = 3 [json_name = "monitored"];
+			/**
+			 * When custom is true, the observing_block list is directly
+			 * set by the end user.
+			 */
+			bool custom = 4;
+		}
+	}
+
+	Configuration configuration = 2;
+
+	/*
+	 * The maximum number of OBs which can be omitted but still provide science value.
+	 * It's main purpose is to assist the scheduling/weighting algorithm.
+	 */
+	int32 minimum_count = 3;
+}
