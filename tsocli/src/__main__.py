@@ -1,7 +1,6 @@
 import sys
-from .classmodule import ExampleTsoClass
-from .funcmodule import my_function
-
+from src.examples.classmodule import ExampleTsoClass
+from src.examples.funcmodule import my_function
 
 def main():
     print('in main')
@@ -15,6 +14,7 @@ def main():
     my_object = ExampleTsoClass('Some Text To Show')
     my_object.say_text()
 
+    # TODO: Add methods here to call a Command pattern defined elsewhere
 
 if __name__ == '__main__':
     main()

@@ -2,44 +2,7 @@ name: tso
 channels:
   - defaults
 dependencies:
-  - astropy=3.0.5
-  - atomicwrites=1.2.1
-  - attrs=18.2.0
-  - blas=1.0
-  - ca-certificates=2018.03.07
-  - certifi=2018.10.15
-  - intel-openmp=2019.1
-  - libedit=3.1.20170329
-  - libffi=3.2.1
-  - mkl=2018.0.3
-  - mkl_fft=1.0.6
-  - mkl_random=1.0.1
-  - more-itertools=4.3.0
-  - ncurses=6.1
-  - numpy=1.15.4
-  - numpy-base=1.15.4
-  - openssl=1.1.1
-  - pip=18.1
-  - pluggy=0.8.0
-  - psutil=5.4.8
-  - py=1.7.0
-  - pytest=4.0.0
-  - pytest-arraydiff=0.2
-  - pytest-astropy=0.4.0
-  - pytest-doctestplus=0.2.0
-  - pytest-openfiles=0.3.0
-  - pytest-remotedata=0.3.1
-  - python=3.6.7
-  - readline=7.0
-  - setuptools=40.5.0
-  - six=1.11.0
-  - sqlite=3.25.2
-  - tk=8.6.8
-  - wheel=0.32.2
-  - xz=5.2.4
-  - zlib=1.2.11
-  - pip:
-    - deap==1.2.2
-    - pyqt5==5.11.3
-    - pyqt5-sip==4.19.13
-prefix: /Users/eward/anaconda3/envs/tso
+    - astropy
+    - numpy=1.13.*
+    - pip:
+        - deap==1.2.2
