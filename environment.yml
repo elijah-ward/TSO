@@ -4,5 +4,6 @@ channels:
 dependencies:
     - astropy
     - numpy=1.13.*
+    - pytest
     - pip:
         - deap==1.2.2

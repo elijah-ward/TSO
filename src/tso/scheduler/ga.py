@@ -1,8 +1,11 @@
-# ga.py
-# Much of the following implementation is explained at https://deap.readthedocs.io/en/master/tutorials/basic/part1.html
+"""
+ga.py
+
+Much of the following implementation is explained at https://deap.readthedocs.io/en/master/tutorials/basic/part1.html
+"""
 
 from deap import tools
-from tsocli.src.cost_heuristic import CostHeuristic
+from .cost_heuristic import CostHeuristic
 
 IND_SIZE = 10
 

@@ -3,7 +3,7 @@
 
 
 <p align="center">
-<img align="center" src="https://github.com/elijah-ward/TSO/blob/master/images/TSO.png" alt="TSO"/>
+<img align="center" src="https://github.com/elijah-ward/TSO/blob/master/resources/images/TSO.png" alt="TSO"/>
 </p>
 
 TSO is a scheduling tool written in Python for use by astronomical researchers in order to consider a wide variety of constraints and attempt to produce an optimal observation schedule.
