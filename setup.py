@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     name='tso',
     version='0.1.0',
-    description='A useful module',
+    description='A scheduling software used for telescope imaging applications',
     url="https://github.com/elijah-ward/TSO",
     package_dir={'': 'src'},
     packages=['tso'],
@@ -18,3 +18,5 @@ setup(
         ]
     }
 )
+
+# TODO: Couple in a test harness in here so we can run `python setup.py tests` in the near future
