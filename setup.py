@@ -7,6 +7,11 @@ setup(
     url="https://github.com/elijah-ward/TSO",
     package_dir={'': 'src'},
     packages=['tso'],
+
+    setup_requires=[
+        "pytest-runner"
+    ],
+
     install_requires=[
         'astropy',
         'pytest',
@@ -14,9 +19,16 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'tsocli = src.tsocli.__main__:main'
+            'tsocli = tso.tsocli.__main__:main'
         ]
-    }
+    },
+
+    tests_require=[
+        'pytest'
+    ],
+    test_suite='tso'
 )
 
-# TODO: Couple in a test harness in here so we can run `python setup.py tests` in the near future
+# Common Commands:
+# Install and Ruin:     pip install -e .
+# Run Tests:            python setup.py pytest
