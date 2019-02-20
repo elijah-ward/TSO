@@ -10,6 +10,14 @@ TSO is a scheduling tool written in Python for use by astronomical researchers i
 
 ## Getting Started
 
+### Installation
+The main entrypoint into TSO is through the `tsocli` sub-module.
+The details can be found in the [README of the submodule.](./src/tso/tsocli/README.md)
+
+To install the cli tool just execute the following
+1. `pip install -e .` (install the project)
+2. `tsocli -h` start learning/using the entrypoint
+
 ## Useful Tools
 
 - `conda` - https://conda.io/miniconda.html (useful in managing multiple python environments)
