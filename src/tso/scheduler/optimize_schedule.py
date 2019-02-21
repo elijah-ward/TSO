@@ -8,7 +8,7 @@ from deap import base
 from deap import creator
 from deap import tools
 
-from cost_heuristic import CostHeuristic
+from .cost_heuristic import CostHeuristic
 
 import random
 
