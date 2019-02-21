@@ -10,7 +10,14 @@ from deap import tools
 
 from cost_heuristic import CostHeuristic
 
-def ga(n_timeslots, n_pop, n_gen, cxpb, mutpb, eval_func, time_assignment, observation_blocks):
+import random
+
+def test_eval(ind):
+    return sum(ind),
+
+def optimize_schedule(n_timeslots, n_pop, n_gen, cxpb, mutpb, eval_func, observation_blocks):
+
+    random.seed(64)
 
     creator.create("FitnessMax", base.Fitness, weights=(1.0,))
     creator.create("Individual", list, fitness=creator.FitnessMax)
@@ -21,7 +28,7 @@ def ga(n_timeslots, n_pop, n_gen, cxpb, mutpb, eval_func, time_assignment, obser
     toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 
     # Genetic Operators
-    toolbox.register("evaluate", evalOneMax)
+    toolbox.register("evaluate", eval_func)
     toolbox.register("mate", tools.cxTwoPoint)
     toolbox.register("mutate", tools.mutFlipBit, indpb=0.05)
     toolbox.register("select", tools.selTournament, tournsize=3)
@@ -60,8 +67,18 @@ def ga(n_timeslots, n_pop, n_gen, cxpb, mutpb, eval_func, time_assignment, obser
 
         pop[:] = offspring
 
-    # Gather all the fitnesses in one list and print the stats
-    fits = [ind.fitness.values[0] for ind in pop]
+        # Gather all the fitnesses in one list and print the stats
+        fits = [ind.fitness.values[0] for ind in pop]
+
+        length = len(pop)
+        mean = sum(fits) / length
+        sum2 = sum(x*x for x in fits)
+        std = abs(sum2 / length - mean**2)**0.5
+
+        print("  Min %s" % min(fits))
+        print("  Max %s" % max(fits))
+        print("  Avg %s" % mean)
+        print("  Std %s" % std)
 
     length = len(pop)
     mean = sum(fits) / length
