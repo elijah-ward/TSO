@@ -67,6 +67,14 @@ From the root of the project:
 
 This will run a container with a tool called [Flyway](https://flywaydb.org/) within. It will run the scripts within the `db/migrations` directory (likely just the schema). It will also run any scripts in the `db/sample-data` where we will house scripts that insert test data.
 
+#### Generate test data
+
+To generate testing observation data clean and create the database with:
+
+From db folder
+1. 'mysql -h 127.0.0.1 -u root -P 3306 -p < createDB.sql'
+2. 'python3 generateData.py '
+
 #### Cleaning the database
 
 Sometimes it can be useful to start from a fresh database (most useful to pick up changes you have made to test data, for example). Since we are not working with a production database, we need not worry about wiping our local database clean and starting over.
@@ -74,6 +82,7 @@ Sometimes it can be useful to start from a fresh database (most useful to pick u
 From the root of the project:
 1. `cd db`
 2. `./maintain_db clean`
+
 
 You can now apply migrations again against a clean database.
 
