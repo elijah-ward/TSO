@@ -1,6 +1,5 @@
 # cost_heuristic.py
-from . import constraint_analyzer as ca
-
+from tso.scheduler import constraint_analyzer as ca
 
 class CostHeuristic:
 
