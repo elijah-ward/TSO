@@ -8,4 +8,7 @@ class ObservationBlock:
         self.remaining_observing_chances = remaining_observing_chances
         self.observation_duration = observation_duration
 
+    def __str__(self):
+        return str(self.observation_id) + " " + self.coordinates + " " + str(self.agency_id) + " " +str(self.priority)
+
     
