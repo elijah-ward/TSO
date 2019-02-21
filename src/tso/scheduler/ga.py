@@ -8,7 +8,7 @@ from deap import base
 from deap import creator
 from deap import tools
 
-from .cost_heuristic import CostHeuristic
+from cost_heuristic import CostHeuristic
 
 def ga(n_timeslots, n_pop, n_gen, cxpb, mutpb, eval_func, time_assignment, observation_blocks):
 

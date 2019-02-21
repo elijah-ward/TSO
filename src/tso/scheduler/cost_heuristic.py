@@ -1,6 +1,5 @@
 # cost_heuristic.py
-from . import constraint_analyzer as ca
-
+import constraint_analyzer as ca
 
 class CostHeuristic:
 
