@@ -1,5 +1,5 @@
 """
-ga.py
+optimize_schedule.py
 
 Much of the following implementation is explained at https://deap.readthedocs.io/en/master/tutorials/basic/part1.html
 """
