@@ -80,14 +80,5 @@ def optimize_schedule(n_timeslots, n_pop, n_gen, cxpb, mutpb, eval_func, observa
         print("  Avg %s" % mean)
         print("  Std %s" % std)
 
-    length = len(pop)
-    mean = sum(fits) / length
-    sum2 = sum(x*x for x in fits)
-    std = abs(sum2 / length - mean**2)**0.5
-
-    print("  Min %s" % min(fits))
-    print("  Max %s" % max(fits))
-    print("  Avg %s" % mean)
-    print("  Std %s" % std)
-
-
+if __name__ == '__main__':
+    optimize_schedule(1000, 1000, 10, 0.5, 0.2, test_eval, [1,2,3,4,5,6,7,8,9,10])
