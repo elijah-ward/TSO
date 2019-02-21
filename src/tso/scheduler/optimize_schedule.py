@@ -15,7 +15,15 @@ import random
 def test_eval(ind):
     return sum(ind),
 
-def optimize_schedule(n_timeslots, n_pop, n_gen, cxpb, mutpb, eval_func, observation_blocks):
+def print_result(ind, n_pop, n_gen):
+    print('=================== Results Of Optimization ===================')
+    print('Number of Generations: {}'.format(n_gen))
+    print('Population Size: {}'.format(n_pop))
+    print('Raw Best Individual: {}'.format(ind))
+    print('Best Individual Fitness Values: {}'.format(ind.fitness.values))
+    print('===============================================================')
+
+def optimize_schedule(n_timeslots, n_pop, n_gen, cxpb, mutpb, observation_blocks, eval_func=test_eval):
 
     random.seed(64)
 
@@ -34,13 +42,7 @@ def optimize_schedule(n_timeslots, n_pop, n_gen, cxpb, mutpb, eval_func, observa
     toolbox.register("select", tools.selTournament, tournsize=3)
 
     pop = toolbox.population(n=n_pop)
-    best = pop[0]
     fitnesses = list(map(toolbox.evaluate, pop))
-
-    for ind, fit in zip(pop, fitnesses):
-        ind.fitness.values = fit
-        if ind.fitness.values > best.fitness.values:
-            best = toolbox.clone(ind)
 
     # Begin Evolution through subsequent generations
     for generation in range(n_gen):
@@ -80,5 +82,10 @@ def optimize_schedule(n_timeslots, n_pop, n_gen, cxpb, mutpb, eval_func, observa
         print("  Avg %s" % mean)
         print("  Std %s" % std)
 
+    best_ind = tools.selBest(pop, k=1)[0]
+    print_result(best_ind, n_pop, n_gen)
+    return best_ind
+
+
 if __name__ == '__main__':
-    optimize_schedule(1000, 1000, 10, 0.5, 0.2, test_eval, [1,2,3,4,5,6,7,8,9,10])
+    optimize_schedule(1000, 1000, 10, 0.5, 0.2, [1,2,3,4,5,6,7,8,9,10])
