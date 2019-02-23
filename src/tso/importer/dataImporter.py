@@ -1,14 +1,11 @@
 import mysql.connector
 import random
 # Look into this for correct/standard way
-from tso.observation.observation_block import ObservationBlock 
-# import os
-# dirname = os.path.dirname(__file__)
-# filename = os.path.join(dirname, '../observation')
+from tso.observation.observation_request import ObservationRequest 
 
 class dataInput:
 
-    def getObservations():
+    def getObservations(self):
         mydb = mysql.connector.connect(
             host="127.0.0.1",
             user="root",
@@ -21,7 +18,8 @@ class dataInput:
 
         observations =[]
         for line in lines:
-            singleObservation = ObservationBlock(line[0],line[1],line[2],line[3],line[4],line[5])
+            print(line)
+            singleObservation = ObservationRequest(line[0],(line[1],line[2]),line[3],line[4],line[5], line[6])
             observations.append(singleObservation)
 
         return observations
@@ -50,10 +48,9 @@ class dataInput:
         cursor.execute(sql)
 
         lines = cursor.fetchall()
-        print(lines)
 
         observations =[]
         for line in lines:
-            singleObservation = ObservationBlock(line[0],line[1],line[2],line[3],line[4],line[5])
+            singleObservation = ObservationRequest(line[0],line[1],line[2],line[3],line[4],line[5])
             observations.append(singleObservation)
         return observations
