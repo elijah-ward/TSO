@@ -4,7 +4,7 @@ Data Importer
 Allows importing TSO data from TSO persistence.
 """
 
-from tso.observation.observation_block import ObservationBlock
+from tso.observation.observation_request import ObservationRequest
 from tso.util import persistence as persistence_util
 
 
@@ -23,8 +23,9 @@ def get_all_observations():
 
     observations = []
     for line in lines:
+        print(line)
         observations.append(
-            ObservationBlock(line[0], line[1], line[2], line[3], line[4], line[5])
+            ObservationRequest(line[0], (line[1], line[2]), line[3], line[4], line[5], line[6])
         )
 
     return observations
@@ -60,6 +61,6 @@ def get_observations_with_constraint(
     observations = []
     for line in lines:
         observations.append(
-            ObservationBlock(line[0], line[1], line[2], line[3], line[4], line[5])
+            ObservationRequest(line[0], (line[1], line[2]), line[3], line[4], line[5], line[6])
         )
     return observations

@@ -26,20 +26,24 @@ def generate_mock_observation_values():
     values = []
     for x in range(0, 1000):
         _id = x
-        skycoord = "10.625, 41.2, frame='icrs', unit='deg'"
+        # template skycoord: "10.625, 41.2, frame='icrs', unit='deg'"
+        right_ascension = (random.randint(0, 360000)/1000)
+        declination = (random.randint(0, 360000)/1000)
         agency_id = random.randint(1, 100)
         priority = random.randint(1, 100)
         remaining_observing_chances = random.randint(1, 10)
         observation_duration = random.randint(100, 18000)
-        values.append((_id, skycoord, agency_id, priority, remaining_observing_chances, observation_duration))
+        values.append(
+            (_id, right_ascension, declination, agency_id, priority, remaining_observing_chances, observation_duration)
+        )
 
     return values
 
 
 agencies_sql = "INSERT INTO agencies (id, name) VALUES (%s, %s);"
 observation_sql = "INSERT INTO observation " \
-                  "(id, sky_address, agency_id, priority, remaining_observing_chances, observation_duration) " \
-                  "VALUES (%s, %s, %s, %s, %s, %s);"
+                  "(id, right_ascension, declination, agency_id, priority, remaining_observing_chances, observation_duration) " \
+                  "VALUES (%s, %s, %s, %s, %s, %s, %s)"
 
 mode = sys.argv[1]
 
