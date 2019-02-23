@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CONFIG="conf/flyway.conf"
+CONFIG="flyway/conf/flyway.conf"
 if [ ! -e "$CONFIG" ]; then
     echo "ERROR: No configuration file detected at path:"
     echo "  $CONFIG"
@@ -9,7 +9,7 @@ if [ ! -e "$CONFIG" ]; then
     exit 1
 fi
 
-DB_NAME=$(cat conf/flyway.conf | grep "^flyway.url" | sed 's/^.*\///')
+DB_NAME=$(cat flyway/conf/flyway.conf | grep "^flyway.url" | sed 's/^.*\///')
 
 echo local: ensuring database exists: $DB_NAME
 CREATE_SCRIPT="echo CREATE DATABASE IF NOT EXISTS $DB_NAME | mysql --password=password"

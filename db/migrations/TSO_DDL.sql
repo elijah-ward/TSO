@@ -1,27 +1,33 @@
--- MySQL dump 10.13  Distrib 5.7.9, for Win64 (x86_64)
---
--- Host: gloin    Database: observing
 -- ------------------------------------------------------
--- Server version	5.5.5-10.1.12-MariaDB
+-- TSO DDL
+--
+-- This is based on a SQL Dump provided from the CFHT Team
+-- Version: 0.02
+-- ------------------------------------------------------
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+DROP TABLE IF EXISTS `agencies`;
+CREATE TABLE agencies (
+  id bigint(20) NOT NULL,
+  name varchar(45) DEFAULT NULL,
+  PRIMARY KEY (id)
+);
+
+DROP TABLE IF EXISTS observation;
+CREATE TABLE observation (
+  id bigint(20) NOT NULL ,
+  right_ascension float(6,3) NOT NULL,
+  declination float(6,3) NOT NULL,
+  agency_id bigint(20) NOT NULL,
+  priority bigint(10) NOT NULL,
+  remaining_observing_chances integer(10) NOT NULL,
+  observation_duration bigint(20) NOT NULL,
+  PRIMARY KEY (id)
+);
 
 --
 -- Table structure for table `agencies`
 --
-
 DROP TABLE IF EXISTS `agencies`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `agencies` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `agency_token` varchar(191) DEFAULT NULL,
@@ -35,15 +41,11 @@ CREATE TABLE `agencies` (
   UNIQUE KEY `name` (`name`),
   KEY `letter` (`letter`)
 ) ENGINE=InnoDB AUTO_INCREMENT=42922 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `agencies_programs`
 --
-
 DROP TABLE IF EXISTS `agencies_programs`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `agencies_programs` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `agency_token` varchar(191) NOT NULL,
@@ -65,15 +67,11 @@ CREATE TABLE `agencies_programs` (
   KEY `program_type` (`program_type`),
   KEY `program_id` (`program_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=18292 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `agencies_runs`
 --
-
 DROP TABLE IF EXISTS `agencies_runs`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `agencies_runs` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `agency_id` bigint(20) NOT NULL,
@@ -86,15 +84,11 @@ CREATE TABLE `agencies_runs` (
   KEY `agency_id` (`agency_id`),
   KEY `run_id` (`semester_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=42928 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `clock_logs`
 --
-
 DROP TABLE IF EXISTS `clock_logs`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `clock_logs` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `clock_log_token` varchar(191) NOT NULL,
@@ -104,15 +98,11 @@ CREATE TABLE `clock_logs` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `clock_log_token_UNIQUE` (`clock_log_token`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4555 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `events`
 --
-
 DROP TABLE IF EXISTS `events`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `events` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `event_token` varchar(191) NOT NULL,
@@ -128,15 +118,11 @@ CREATE TABLE `events` (
   KEY `event_start_at` (`event_start_at`,`event_end_at`),
   KEY `event_end_at` (`event_end_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=91618 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `exposures`
 --
-
 DROP TABLE IF EXISTS `exposures`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `exposures` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `token` varchar(191) NOT NULL,
@@ -153,7 +139,7 @@ CREATE TABLE `exposures` (
   `dirty` int(11) NOT NULL DEFAULT '0',
   `version` int(11) NOT NULL DEFAULT '0',
   `instrument_run_id` bigint(20) DEFAULT NULL,
-  `observed_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `observed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, -- TODO: These Dates of zero cause issue
   PRIMARY KEY (`id`),
   UNIQUE KEY `token_UNIQUE` (`token`),
   UNIQUE KEY `exposures_obsid` (`obsid`),
@@ -167,15 +153,11 @@ CREATE TABLE `exposures` (
   KEY `observed_at` (`observed_at`),
   KEY `program_id` (`program_id`,`observed_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=961426 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `instrument_runs`
 --
-
 DROP TABLE IF EXISTS `instrument_runs`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `instrument_runs` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `semester_id` bigint(20) NOT NULL,
@@ -183,21 +165,17 @@ CREATE TABLE `instrument_runs` (
   `queue_run` varchar(6) NOT NULL,
   `camera_run` int(2) DEFAULT NULL,
   `start_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `end_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `end_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, -- TODO: Modified from "0:0000 whatever
   PRIMARY KEY (`id`),
   UNIQUE KEY `instrument_queue_run` (`semester_id`,`queue_run`),
   UNIQUE KEY `instrument_camera_run` (`semester_id`,`instrument`,`camera_run`),
   KEY `queue_run` (`queue_run`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2602609 DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `lookups`
 --
-
 DROP TABLE IF EXISTS `lookups`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `lookups` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `key0` varchar(45) DEFAULT NULL,
@@ -211,15 +189,11 @@ CREATE TABLE `lookups` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `key0_key1_name` (`key0`,`key1`,`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=128122 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `metadata`
 --
-
 DROP TABLE IF EXISTS `metadata`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `metadata` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `key` varchar(191) NOT NULL,
@@ -227,15 +201,11 @@ CREATE TABLE `metadata` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `metadata_key` (`key`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `observer_logs`
 --
-
 DROP TABLE IF EXISTS `observer_logs`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `observer_logs` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `observer_log_token` varchar(191) NOT NULL,
@@ -245,15 +215,11 @@ CREATE TABLE `observer_logs` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `observer_log_token_UNIQUE` (`observer_log_token`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `observing_block_snapshots`
 --
-
 DROP TABLE IF EXISTS `observing_block_snapshots`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `observing_block_snapshots` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `observing_block_snapshot_data` mediumblob,
@@ -269,15 +235,11 @@ CREATE TABLE `observing_block_snapshots` (
   KEY `snapshotable_type` (`snapshotable_type`,`snapshotable_id`),
   KEY `prune_at` (`prune_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15349 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `observing_blocks`
 --
-
 DROP TABLE IF EXISTS `observing_blocks`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `observing_blocks` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `token` varchar(191) NOT NULL,
@@ -307,15 +269,11 @@ CREATE TABLE `observing_blocks` (
   KEY `active_runid` (`active_runid`),
   KEY `dirty` (`dirty`)
 ) ENGINE=InnoDB AUTO_INCREMENT=341707 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `observing_components`
 --
-
 DROP TABLE IF EXISTS `observing_components`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `observing_components` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `token` varchar(191) NOT NULL,
@@ -333,15 +291,11 @@ CREATE TABLE `observing_components` (
   KEY `targets_id` (`targets_id`),
   KEY `dirty` (`dirty`)
 ) ENGINE=InnoDB AUTO_INCREMENT=643225 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `observing_groups`
 --
-
 DROP TABLE IF EXISTS `observing_groups`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `observing_groups` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `token` varchar(191) NOT NULL,
@@ -363,15 +317,11 @@ CREATE TABLE `observing_groups` (
   KEY `attributing_agency_id` (`attributing_agency_runid`),
   KEY `dirty` (`dirty`)
 ) ENGINE=InnoDB AUTO_INCREMENT=188881 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `observing_templates`
 --
-
 DROP TABLE IF EXISTS `observing_templates`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `observing_templates` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `token` varchar(191) NOT NULL,
@@ -388,15 +338,11 @@ CREATE TABLE `observing_templates` (
   KEY `program_roots_id` (`program_id`),
   KEY `dirty` (`dirty`)
 ) ENGINE=InnoDB AUTO_INCREMENT=891697 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `pi_programs`
 --
-
 DROP TABLE IF EXISTS `pi_programs`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `pi_programs` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `usertoken` varchar(191) DEFAULT NULL,
@@ -409,15 +355,11 @@ CREATE TABLE `pi_programs` (
   KEY `usertoken` (`usertoken`),
   KEY `program_roots_id` (`program_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=18934 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `programs`
 --
-
 DROP TABLE IF EXISTS `programs`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `programs` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `program_token` varchar(191) NOT NULL,
@@ -439,15 +381,11 @@ CREATE TABLE `programs` (
   KEY `instrument` (`instrument`),
   KEY `dirty` (`dirty`)
 ) ENGINE=InnoDB AUTO_INCREMENT=18634 DEFAULT CHARSET=utf8 COMMENT='		';
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `queues`
 --
-
 DROP TABLE IF EXISTS `queues`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `queues` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `queue_token` varchar(191) NOT NULL,
@@ -460,35 +398,27 @@ CREATE TABLE `queues` (
   UNIQUE KEY `queue_token_UNIQUE` (`queue_token`),
   UNIQUE KEY `observation_night_label_unique` (`observation_night`,`label`)
 ) ENGINE=InnoDB AUTO_INCREMENT=739 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `semesters`
 --
-
 DROP TABLE IF EXISTS `semesters`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `semesters` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `semester` varchar(3) DEFAULT NULL,
-  `start_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `end_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `start_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, -- TODO: Modified from "0:0000 whatever
+  `end_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP, -- TODO: Modified from "0:0000 whatever
   `proprietary_period_end_date` date DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `semester` (`semester`)
 ) ENGINE=InnoDB AUTO_INCREMENT=317140 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `tar1`
 --
-
 DROP TABLE IF EXISTS `tar1`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tar1` (
   `id` bigint(20) NOT NULL DEFAULT '0',
   `agency_id` bigint(20) NOT NULL,
@@ -497,15 +427,11 @@ CREATE TABLE `tar1` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `target_identities`
 --
-
 DROP TABLE IF EXISTS `target_identities`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `target_identities` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `canonical_name` varchar(191) NOT NULL,
@@ -519,15 +445,11 @@ CREATE TABLE `target_identities` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `target_identities` (`canonical_name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=183031 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `target_reservations`
 --
-
 DROP TABLE IF EXISTS `target_reservations`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `target_reservations` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -540,15 +462,11 @@ CREATE TABLE `target_reservations` (
   KEY `target_reservations_target_id` (`target_id`),
   KEY `target_reservations_target_identities_id` (`target_identities_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `targets`
 --
-
 DROP TABLE IF EXISTS `targets`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `targets` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `target_data` mediumblob,
@@ -569,15 +487,11 @@ CREATE TABLE `targets` (
   KEY `program_roots_id` (`program_id`),
   KEY `dirty` (`dirty`)
 ) ENGINE=InnoDB AUTO_INCREMENT=848797 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `weather_logs`
 --
-
 DROP TABLE IF EXISTS `weather_logs`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `weather_logs` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `weather_log_token` varchar(191) NOT NULL,
@@ -587,15 +501,5 @@ CREATE TABLE `weather_logs` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `weather_log_token_UNIQUE` (`weather_log_token`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14884 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2018-12-03  9:03:33
+# TODO: Add Foreign Keys and FKConstraints

@@ -4,3 +4,4 @@
 astropy
 pytest
 deap
+mysql-connector-python

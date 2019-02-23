@@ -1,3 +1,16 @@
+"""
+TSO Setup.py
+
+As part of being packaged into a CLI tool,
+the TSO project is configured here using setuptools
+
+These are some commands to run against this project
+    - Install and Run:    pip install -e .
+    - Run Tests:          python setup.py pytest
+
+"""
+
+
 from setuptools import setup
 
 setup(
@@ -15,7 +28,8 @@ setup(
     install_requires=[
         'astropy',
         'pytest',
-        'deap'
+        'deap',
+        'mysql-connector-python'
     ],
     entry_points={
         'console_scripts': [
@@ -28,7 +42,3 @@ setup(
     ],
     test_suite='tso'
 )
-
-# Common Commands:
-# Install and Ruin:     pip install -e .
-# Run Tests:            python setup.py pytest
