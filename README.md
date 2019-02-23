@@ -69,11 +69,13 @@ This will run a container with a tool called [Flyway](https://flywaydb.org/) wit
 
 #### Generate test data
 
-To generate testing observation data clean and create the database with:
+There are two ways for generating test TSO data.
+_A python script supports these methods._
 
-From db folder
-1. 'mysql -h 127.0.0.1 -u root -P 3306 -p < createDB.sql'
-2. 'python3 generateData.py '
+**[generate_test_data.py](./db/generate_test_data.py)**
+Methodology
+1. Using `generate_test_data.py sql` -- Connecting directly to DB through python and executing statements
+2. Using `generate_test_data.py file` -- Outputting a file locally to be used with flyway/Docker....other methods.
 
 #### Cleaning the database
 
