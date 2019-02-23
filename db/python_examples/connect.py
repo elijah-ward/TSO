@@ -1,5 +1,12 @@
+"""
+connect.py
+
+An example of connecting to the tso DB from the mysql.connector library
+"""
+
+
 import mysql.connector
- # CONNNNNNNECt WITH mysql -h 127.0.0.1 -u root -P 3306 -p
+# Connect WITH mysql -h 127.0.0.1 -u root -P 3306 -p
 
 mydb = mysql.connector.connect(
   host="localhost",
@@ -26,4 +33,4 @@ mycursor.execute("CREATE TABLE `observing_blocks` ( `id` bigint(20) NOT NULL AUT
 
 mycursor.execute("SHOW TABLES")
 for x in mycursor:
-  print(x) 
+    print(x)

@@ -1,15 +1,12 @@
 version: '2'
 services:
   flyway:
-    image: boxfuse/flyway:5
+    build: ./db/flyway
     volumes:
       - ./db/conf:/flyway/conf
       - ./db/migrations:/flyway/sql
       - ./db/sample-data:/flyway/sample-data
   mysql:
-    image: mysql
-    command: --default-authentication-plugin=mysql_native_password
+    build: ./db/mysql
     ports:
       - "3306:3306"
-    environment:
-      MYSQL_ROOT_PASSWORD: 'password'
