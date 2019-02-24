@@ -1,12 +1,19 @@
 version: '2'
 services:
   flyway:
-    build: ./db/flyway
+    image: boxfuse/flyway:5
     volumes:
       - ./db/conf:/flyway/conf
       - ./db/migrations:/flyway/sql
       - ./db/sample-data:/flyway/sample-data
   mysql:
-    build: ./db/mysql
+    image: mysql:5.7
     ports:
       - "3306:3306"
+    environment:
+        MYSQL_ONETIME_PASSWORD: 'yes'
+        MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+        MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+        MYSQL_USER: 'tsouser'
+        MYSQL_PASSWORD: 'password'
+        MYSQL_DATABASE: 'tso'
