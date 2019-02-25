@@ -8,3 +8,4 @@ dependencies:
     - pip:
         - deap==1.2.2
         - mysql-connector-python
+        - astroplan

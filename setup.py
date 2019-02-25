@@ -27,6 +27,7 @@ setup(
 
     install_requires=[
         'astropy',
+        'astroplan',
         'pytest',
         'deap',
         'mysql-connector-python'

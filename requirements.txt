@@ -2,6 +2,7 @@
 
 -e .
 astropy
+astroplan
 pytest
 deap
 mysql-connector-python

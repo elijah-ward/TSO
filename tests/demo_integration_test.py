@@ -1,4 +1,4 @@
-from src.tso.observation import fixed_constraint, observation_block, dynamic_constraint
+from src.tso.observation import fixed_constraint, observation_request, dynamic_constraint
 from src.tso.importer import transformer
 
 from astropy import units as u
@@ -21,15 +21,15 @@ class TestDemoIntegration:
             frame='icrs'
         )
 
-        block = observation_block.ObservationBlock(22, "Kirk", 10, c, constraints)
+        c = (123, 123) # Overriding above definition -- this is the new way of defining coordinates??
+
+        block = observation_request.ObservationRequest(
+            22, c, 123, 123, 123, 123
+        )
+
         print(
-            "Observation block: ",
-            block.researcher_name,
-            block.priority,
-            block.coordinates,
-            block.constraints[0].type,
-            block.constraints[1].type
+            "Obsevation block: ",
+            block
         )
 
         new_block = transformer.transform("testing")
-        print("New Block, researcher name: ", new_block.researcher_name)
