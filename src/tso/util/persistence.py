@@ -5,7 +5,7 @@ We will be primarily be interfacing with a mySQL DB.
 """
 
 import mysql.connector
-from src.configuration import configuration_parser
+from configuration import configuration_parser
 
 config = configuration_parser.get_database_config()
 
