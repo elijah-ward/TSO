@@ -17,7 +17,7 @@ def pytest_generate_tests(metafunc):
 class TestScheduler(object):
 
     params = {
-        'test_return_list': [dict(timeslots=1000, pop=1000, gen=10, cxpb=0.5, mutpb=0.2, blocks=OBSERVATION_BLOCKS), ]
+        'test_generate_schedule': [dict(timeslots=1000, pop=1000, gen=10, cxpb=0.5, mutpb=0.2, blocks=OBSERVATION_BLOCKS), ]
     }
 
     def test_generate_schedule(self, timeslots, pop, gen, cxpb, mutpb, blocks):
