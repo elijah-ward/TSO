@@ -4,7 +4,7 @@ constraint_aggregator.py
 Aggregated Constraints from Astroplan as well as our own user-defined constraints.
 """
 
-from astroplan.constraint import AtNightConstraint, AirmassConstraint
+from astroplan.constraints import AtNightConstraint, AirmassConstraint
 
 
 def initialize_constraints():
