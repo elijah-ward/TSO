@@ -1,8 +1,9 @@
-class Scheduler:
+from astroplan.scheduling import PriorityScheduler
+from astroplan.scheduling import Schedule
 
-    def __init__(self):
-        self.observation_blocks = []
-        self.block_count = 0
+from tso.importer import data_importer as di
+from tso.scheduler import constraint_aggregator as ca
+from tso.scheduler import transitioner
 
     def generate_schedule(self, schedule_horizon):
         print(schedule_horizon)
