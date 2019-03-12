@@ -1,9 +1,22 @@
+"""
+Transformer
+
+TODO: Take in the cfhtObservingBlocks and convert them into tsoObservingRequests
+"""
+
 from src.tso.observation import observation_request
 from astropy import units as u
 from astropy.coordinates import SkyCoord
 
 
+def transform_cfht_observing_blocks(cfht_observing_blocks):
+    print("TODO: Implement")
+
+
 def transform(data_string):
+    """"
+    TODO: Deprecated
+    """
     print('Transforming the data :: {}'.format(data_string))
     c = SkyCoord(ra=10.625*u.degree, dec=41.2*u.degree, frame='icrs')
     temp_block = observation_request.ObservationRequest(

@@ -2,16 +2,21 @@
 Data Importer
 
 Allows importing TSO data from TSO persistence.
+
+TODO: MODIFY THIS SO IT IMPORTS cfhtObservingBlocks
 """
 
 from tso.observation.observation_request import ObservationRequest
 from tso.util import persistence as persistence_util
+from sys import maxsize as MAX_SIZE
 
 
 def get_all_observations():
     """
     Retrieve all observations found in persistence.
     Potentially dangerous if a large amount of entries exist
+
+    TODO: Deprecated - see top level TODO
 
     :return: All observations in TSO persistence
     """
@@ -32,10 +37,17 @@ def get_all_observations():
 
 
 def get_observations_with_constraint(
-    min_priority=0, remaining_observing_chances=-1, observation_duration_min=-1, observation_duration_max=-1
+    min_priority=0,
+    remaining_observing_chances=-1,
+    observation_duration_min=-1,
+    observation_duration_max=MAX_SIZE
 ):
     """
     Get observation blocks with given constraints.
+    The default values allow for the maximal amount of requests to be returned,
+    or in other words, the default values provide the same functionality
+
+    TODO: Deprecated - see top level TODO
 
     :param min_priority:                returning list with include only observations with higher priority.
     :param remaining_observing_chances: returning list will include only observations with fewer chances left
