@@ -1,50 +1,39 @@
+"""
+TSO CLI
+
+This is the main entry into the application.
+The initial configuration into this file is through the projects setup.py
+
+This is meant to be as minimal as possible.
+With other functions in this module as primary containers of the complexity
+"""
+
 import sys
 import argparse
 
 from . import command as tso_command
 
-def initialize_import_parser(subparser):
-    import_parser = subparser.add_parser(
-        "import",
-        aliases=['i'],
-        help="Import: import data from the observation database"
-    )  # import from SQL DB  -
-    import_parser.set_defaults(command=tso_command.import_command)
 
-    return import_parser
-
-
-def initialize_schedule_parser(subparser):
-    schedule_parser = subparser.add_parser(
+def initialize_sub_parser(sub_parser):
+    schedule_parser = sub_parser.add_parser(
         "schedule",
         aliases=['s'],
         help="Schedule: schedule observations"
-    )  # Add schedule dates. To and From. step pattern for
-    schedule_parser.set_defaults(command=tso_command.schedule_command)
+    )
+
+    add_arguments(schedule_parser)
+
+    schedule_parser.set_defaults(
+        command=tso_command.cli_pipeline
+    )
 
     return schedule_parser
 
 
-def initialize_optimize_parser(subparser):
-    optimize_parser = subparser.add_parser(
-        "optimize",
-        aliases=['o'],
-        help="Optimize: optimize schedule(s)"
-    )  #TODO: Not needed?
-    optimize_parser.set_defaults(command=tso_command.optimize_command)
-
-    return optimize_parser
-
-
-def initialize_export_parser(subparser):
-    export_parser = subparser.add_parser(
-        "export",
-        aliases=['e'],
-        help="Export: export optimized schedule(s)"
-    )  # Export will be easy-- to what file, filename, default file name
-    export_parser.set_defaults(command=tso_command.export_command)
-
-    return export_parser
+def add_arguments(parser):
+    parser.add_argument("-startDateTime", help="The date time to begin the scheduling")
+    parser.add_argument("-endDateTime", help="The date time to end the scheduling")
+    parser.add_argument("--exportToFile", action='store_true', help="Whether to export to a file or not")
 
 
 def main():
@@ -64,20 +53,21 @@ def main():
         epilog=tso_epilog
     )
 
-    tso_parser.add_argument("-f", help="Some Foo")
+    subparsers = tso_parser.add_subparsers(dest="which")
 
-    subparsers = tso_parser.add_subparsers()
-    import_parser = initialize_import_parser(subparsers)
-    schedule_parser = initialize_schedule_parser(subparsers)
-    optimize_parser = initialize_optimize_parser(subparsers)
-    export_parser = initialize_export_parser(subparsers)
+    main_sub_parser = initialize_sub_parser(subparsers)
+
+    args = tso_parser.parse_args()
 
     # Display the hep if no arguments are passed
     if len(sys.argv) == 1:
         tso_parser.print_help(sys.stderr)
         sys.exit(1)
+    elif (args.which == 's' or args.which == 'schedule') and len(sys.argv) == 2:
+        main_sub_parser.print_help()
+        sys.exit(1)
 
-    args = tso_parser.parse_args()
+    # Call the Pipeline with all arguments
     args.command(args)
 
 

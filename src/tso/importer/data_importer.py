@@ -76,3 +76,9 @@ def get_observations_with_constraint(
             ObservationRequest(line[0], (line[1], line[2]), line[3], line[4], line[5], line[6])
         )
     return observations
+
+
+def get_observations():
+    print("In progress")
+
+    return [9, 6, 3]
