@@ -8,5 +8,7 @@ from astroplan.constraints import AtNightConstraint, AirmassConstraint
 
 
 def initialize_constraints():
-    global_constraints = [AirmassConstraint(max=3, booleanConstraint=False),
+    global_constraints = [AirmassConstraint(max=3, boolean_constraint=False),
                           AtNightConstraint.twilight_civil()]
+
+    return global_constraints
