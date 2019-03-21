@@ -5,7 +5,6 @@ services:
     volumes:
       - ./db/conf:/flyway/conf
       - ./db/migrations:/flyway/sql
-      - ./db/sample-data:/flyway/sample-data
   mysql:
     image: mysql:5.7
     ports:

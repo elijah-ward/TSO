@@ -1,5 +1,5 @@
 from astropy import units as u
-from astropy.coordinates import SkyCoord
+from astropy.coordinates import SkyCoord, Angle
 from astroplan import FixedTarget
 
 
@@ -15,9 +15,11 @@ class ObservationRequest:
         self.remaining_observing_chances = remaining_observing_chances
         self.observation_duration = observation_duration
 
-    def getTarget(self):
-        skycoord = SkyCoord(ra=self.coordinates[0]*u.deg, dec=self.coordinates[1]*u.deg)
-        target = FixedTarget(skycoord, self.observation_id)
+    def get_target(self):
+        ra = self.coordinates[0]*u.deg
+        dec = self.coordinates[1]*u.deg
+        skycoord = SkyCoord(ra=ra, dec=dec, frame='icrs')
+        target = FixedTarget(skycoord, str(self.observation_id))
         return target
 
     def __str__(self):
