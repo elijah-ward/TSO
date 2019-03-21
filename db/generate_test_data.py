@@ -28,7 +28,7 @@ def generate_mock_observation_values():
         _id = x
         # template skycoord: "10.625, 41.2, frame='icrs', unit='deg'"
         right_ascension = (random.randint(0, 360000)/1000)
-        declination = (random.randint(0, 360000)/1000)
+        declination = (random.randint(-90000, 90000)/1000)
         agency_id = random.randint(1, 100)
         priority = random.randint(1, 100)
         remaining_observing_chances = random.randint(1, 10)
