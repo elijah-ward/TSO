@@ -9,6 +9,8 @@ from tso.importer import data_importer as di
 from tso.scheduler import constraint_aggregator as ca
 
 import random
+import warnings
+import json
 
 def create_transitioner(slew_rate, filters):
     # Apply atropy units to all config values
@@ -98,7 +100,13 @@ def generate_schedule(config, start_datetime, end_datetime, ):
 
     prior_scheduler(blocks, priority_schedule)
 
-    print(priority_schedule.to_table())
+    schedule_result = priority_schedule.to_table()
+    schedule_result['configuration'] = schedule_result['configuration']
+    schedule_result.show_in_browser()
+
+    schedule_df = schedule_result.to_pandas()
+    schedule_df.to_csv('./schedule.csv')
+
 
 
 if '__name__' == '__main__':

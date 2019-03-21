@@ -5,4 +5,5 @@ astropy
 astroplan
 pytest
 deap
+pandas
 mysql-connector-python

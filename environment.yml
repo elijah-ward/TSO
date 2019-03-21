@@ -5,6 +5,7 @@ dependencies:
     - astropy
     - numpy=1.13.*
     - pytest
+    - pandas
     - pip:
         - deap==1.2.2
         - mysql-connector-python
