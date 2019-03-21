@@ -4,7 +4,7 @@ Transformer
 TODO: Take in the cfhtObservingBlocks and convert them into tsoObservingRequests
 """
 
-from src.tso.observation import observation_request
+from tso.observation import observation_request
 from astropy import units as u
 from astropy.coordinates import SkyCoord
 
