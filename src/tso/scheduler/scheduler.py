@@ -1,21 +1,26 @@
 from astroplan.scheduling import Schedule, PriorityScheduler, Transitioner, SequentialScheduler
 from astroplan import Observer, FixedTarget, ObservingBlock
 from astroplan.constraints import TimeConstraint
+from astroplan import download_IERS_A
 from astropy.time import Time
 from astropy import units as u
 
 from tso.importer import data_importer as di
 from tso.scheduler import constraint_aggregator as ca
 
+
 def create_transitioner(slew_rate):
     return Transitioner(slew_rate,
-        {'filter': {('B','G'): 10*u.second,
-                    ('G','R'): 10*u.second,
-                    'default': 30*u.second}})
+                        {'filter': {('B', 'G'): 10 * u.second,
+                                    ('G', 'R'): 10 * u.second,
+                                    'default': 30 * u.second}})
+
 
 def generate_schedule(schedule_horizon):
 
-    print("HERE WE AREEE")
+    print('Inside scheduler.py')
+
+    download_IERS_A()
 
     cfht = Observer.at_site('cfht')
     deneb = FixedTarget.from_name('Deneb')
@@ -26,7 +31,7 @@ def generate_schedule(schedule_horizon):
 
     global_constraints = ca.initialize_constraints()
 
-    requests = di.get_observations_with_constraint(min_priority=99)
+    # requests = di.get_observations_with_constraint(min_priority=99)
 
     read_out = 20 * u.second
     n_exp = 5
@@ -56,20 +61,20 @@ def generate_schedule(schedule_horizon):
         # We want each filter to have separate priority (so that target
         # and reference are both scheduled)
         b = ObservingBlock.from_exposures(deneb, priority, deneb_exp, n_exp, read_out,
-                                            configuration = {'filter': bandpass},
-                                            constraints = [first_half_night])
+                                          configuration={'filter': bandpass},
+                                          constraints=[first_half_night])
         blocks.append(b)
         b = ObservingBlock.from_exposures(m13, priority, m13_exp, n_exp, read_out,
-                                            configuration = {'filter': bandpass},
-                                            constraints = [first_half_night])
+                                          configuration={'filter': bandpass},
+                                          constraints=[first_half_night])
         blocks.append(b)
 
-    slew_rate = .8*u.deg/u.second
+    slew_rate = .8 * u.deg / u.second
     transitioner = create_transitioner(slew_rate)
 
-    prior_scheduler = SequentialScheduler(constraints = global_constraints,
-                                        observer = cfht,
-                                        transitioner = transitioner)
+    prior_scheduler = SequentialScheduler(constraints=global_constraints,
+                                          observer=cfht,
+                                          transitioner=transitioner)
 
     priority_schedule = Schedule(noon_before, noon_after)
 
@@ -80,11 +85,3 @@ def generate_schedule(schedule_horizon):
 
 if '__name__' == '__main__':
     generate_schedule(0)
-
-
-
-
-
-
-
-
