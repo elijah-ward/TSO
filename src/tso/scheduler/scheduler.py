@@ -23,7 +23,11 @@ def create_transitioner(slew_rate, filters):
 def generate_schedule(config, start_datetime, end_datetime, ):
 
     print('Inside scheduler.py')
-    download_IERS_A()
+
+    # Sometimes a warning arises called OldEarthOrientationDataWarning which means the following line must run to refresh
+    # we should find a way to catch this warning and only download when necessary
+
+    # download_IERS_A()
     cfht = Observer.at_site('cfht')
     transitioner = create_transitioner(config['slew_rate'], config['filters'])
 
