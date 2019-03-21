@@ -96,7 +96,7 @@ def generate_schedule(config, start_datetime, end_datetime, ):
     #                                       constraints=[])
     #     blocks.append(b)
 
-    prior_scheduler = SequentialScheduler(constraints=[],
+    prior_scheduler = SequentialScheduler(constraints=global_constraints,
                                           observer=cfht,
                                           transitioner=transitioner)
 
