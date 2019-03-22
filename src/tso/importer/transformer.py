@@ -23,7 +23,7 @@ def block_to_request(block):
         observation_id=block.observation_block_id,
         coordinates=block.sky_address, #TODO: Need to convert - unsure of type in DB
         agency_id="Missing", #TODO: GET this information from the CFHT data
-        priority=block.priorty,
+        priority=block.priority,
         remaining_observing_chances=block.remaining_observing_chances,
         observation_duration=block.contiguous_exposure_time_millis
     )
