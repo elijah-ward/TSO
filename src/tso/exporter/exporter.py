@@ -20,5 +20,6 @@ def export_to_file(schedule):
 
 def export_to_browser(schedule):
     print("Displaying schedule in browser...")
-    schedule.show_in_browser()
+    schedule_table = schedule.to_table()
+    schedule_table.show_in_browser()
 
