@@ -39,7 +39,7 @@ def add_arguments(parser):
 
 def main():
 
-    tso_epilog = """ 
+    tso_epilog = """
          ______________
         /_  __/ __/ __ \\
          / / _\ \/ /_/ /

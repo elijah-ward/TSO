@@ -17,9 +17,18 @@ sampleConfigJsonForScheduler = {
     }
 }
 
+tso_epilog = """\n\n
+     ______________
+    /_  __/ __/ __ \\
+     / / _\ \/ /_/ /
+    /_/ /___/\____/
+    ---------------
+    Observe Freely
+    ---------------\n\n"""
+
 
 def cli_pipeline(args):
-    print("Inside Main CLI Pipeline")
+    print(tso_epilog)
     print(args)
 
     cfht_imported_data = data_importer.get_observations()
