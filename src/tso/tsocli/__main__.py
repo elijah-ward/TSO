@@ -31,9 +31,10 @@ def initialize_sub_parser(sub_parser):
 
 
 def add_arguments(parser):
-    parser.add_argument("-startDateTime", help="The date time to begin the scheduling")
-    parser.add_argument("-endDateTime", help="The date time to end the scheduling")
+    parser.add_argument("--startDateTime", help="The date time to begin the scheduling")
+    parser.add_argument("--endDateTime", help="The date time to end the scheduling")
     parser.add_argument("--exportToFile", action='store_true', help="Whether to export to a file or not")
+    parser.add_argument("--exportToBrowser", action='store_true', help="Display schedule in browser")
 
 
 def main():

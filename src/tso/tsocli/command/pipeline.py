@@ -29,5 +29,8 @@ def cli_pipeline(args):
     schedule = scheduler.generate_schedule(sampleConfigJsonForScheduler, args.startDateTime, args.endDateTime)
 
     exporter.export_to_console(schedule)
-    if args.export_to_file:
+    if args.exportToFile:
         exporter.export_to_file(schedule)
+
+    if args.exportToBrowser:
+        exporter.export_to_browser
