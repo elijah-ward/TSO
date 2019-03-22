@@ -42,4 +42,4 @@ def cli_pipeline(args):
         exporter.export_to_file(schedule)
 
     if args.exportToBrowser:
-        exporter.export_to_browser
+        exporter.export_to_browser(schedule)
