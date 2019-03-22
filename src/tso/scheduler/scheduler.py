@@ -104,13 +104,7 @@ def generate_schedule(config, start_datetime, end_datetime, ):
 
     prior_scheduler(blocks, priority_schedule)
 
-    schedule_result = priority_schedule.to_table()
-    schedule_result['configuration'] = schedule_result['configuration']
-    schedule_result.show_in_browser()
-
-    schedule_df = schedule_result.to_pandas()
-    schedule_df.to_csv('./schedule.csv')
-
+    return priority_schedule
 
 
 if '__name__' == '__main__':
