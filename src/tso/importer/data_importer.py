@@ -12,12 +12,12 @@ from sys import maxsize as MAX_SIZE
 def convert_to_cfht(values):
     observation_blocks = []
     for line_values in values:
-        print(line_values)
         observation_blocks.append(
             CFHTObservationBlock(**line_values)
         )
 
     return observation_blocks
+
 
 def get_all_observations():
     """

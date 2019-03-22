@@ -1,10 +1,15 @@
 class CFHTObservationBlock:
+    """
+    CFHTObservationBlock
+
+    Represents entities in the observation_block table of the CFHT database
+    """
 
     def __init__(
         self,
         **properties
     ):
-        self.observation_block_id = properties.get('observation_block_id', -1)
+        self.observation_block_id = properties.get('id', -1)
         self.token = properties.get('token', -1)
         self.observing_groups_id = properties.get('observing_groups_id', -1)
         self.observing_block_data = properties.get('observing_block_data', -1)
