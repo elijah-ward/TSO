@@ -9,6 +9,14 @@ from tso.importer import transformer
 from tso.scheduler import scheduler
 from tso.exporter import exporter
 
+# TODO: Need to move this to an external config.json with global configs for the tool
+sampleConfigJsonForScheduler = {
+    'slew_rate': 0.8,
+    'filters': {
+        'filter': {('MSE', 'EXAMPLE'): 10 }
+    }
+}
+
 
 def cli_pipeline(args):
     print("Inside Main CLI Pipeline")
@@ -18,16 +26,7 @@ def cli_pipeline(args):
 
     tso_observation_requests = transformer.transform_cfht_observing_blocks(cfht_imported_data)
 
-    schedule = scheduler.generate_schedule()
-    # TODO: Need to boostrap in the Config.json stuff here for eli
-    sampleConfigJsonForScheduler = {
-        'slew_rate': 0.8,
-        'filters': {
-            'filter': {
-                ('MSE', 'Dummy'): 10
-            }
-        }
-    }
+    schedule = scheduler.generate_schedule(sampleConfigJsonForScheduler, args.startDateTime, args.endDateTime)
 
     exporter.export_to_console(schedule)
     if args.export_to_file:
