@@ -1,5 +1,6 @@
 from tso.importer import data_importer
 from sys import maxsize as MAX_SIZE
+from tso.observation.cfht_observation_block import CFHTObservationBlock
 
 
 class TestDataImporter:

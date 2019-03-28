@@ -16,15 +16,12 @@ class ObservationRequest:
         self.observation_duration = observation_duration
 
     def get_target(self):
-        ra = self.coordinates[0]*u.deg
-        dec = self.coordinates[1]*u.deg
-        skycoord = SkyCoord(ra=ra, dec=dec, frame='icrs')
-        target = FixedTarget(skycoord, str(self.observation_id))
+        target = FixedTarget(coord=self.coordinates, name=str(self.observation_id))
         return target
 
     def __str__(self):
         return str(self.observation_id) + " " + \
-               str(self.coordinates[0]) + " " + \
-               str(self.coordinates[1]) + " " + \
+               str(self.coordinates.ra.degree) + " " + \
+               str(self.coordinates.dec.degree) + " " + \
                str(self.agency_id) + " " +\
                str(self.priority)
