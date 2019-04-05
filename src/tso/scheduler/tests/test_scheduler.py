@@ -2,9 +2,17 @@
 
 import pytest
 from tso.scheduler import scheduler
+from tso.scheduler.utils import generate_requests as gr
+from astroplan.scheduling import Schedule
 
-OBSERVATION_BLOCKS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+N_BLOCKS = 10
 
+testSchedulerConfig = {
+    'slew_rate': 0.8,
+    'filters': {
+        'filter': {('MSE', 'EXAMPLE'): 10 }
+    }
+}
 
 def pytest_generate_tests(metafunc):
     # called once per each test function
@@ -13,14 +21,12 @@ def pytest_generate_tests(metafunc):
     metafunc.parametrize(argnames, [[funcargs[name] for name in argnames]
                                     for funcargs in funcarglist])
 
-
 class TestScheduler(object):
 
     params = {
-        'test_generate_schedule': [dict(timeslots=1000, pop=1000, gen=10, cxpb=0.5, mutpb=0.2, blocks=OBSERVATION_BLOCKS), ]
+        'test_generate_schedule': [dict(start_datetime='2019-03-10 19:00', end_datetime='2019-03-12 19:00', requests=gr.generate_requests(N_BLOCKS)), ]
     }
 
-    def test_generate_schedule(self, timeslots, pop, gen, cxpb, mutpb, blocks):
-        optimal_ind = op_sched.optimize_schedule(
-            timeslots, pop, gen, cxpb, mutpb, blocks)
-        assert isinstance(optimal_ind, list)
+    def test_generate_schedule(self, start_datetime, end_datetime, requests):
+        schedule = scheduler.generate_schedule(testSchedulerConfig, start_datetime, end_datetime, requests)
+        assert isinstance(schedule, Schedule)
