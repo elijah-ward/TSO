@@ -54,10 +54,12 @@ class TestObservationRequest():
         assert hasattr(req, 'priority')
         assert hasattr(req, 'remaining_observing_chances')
         assert hasattr(req, 'observation_duration')
+        assert hasattr(req, 'target')
+
 
 
     def test_observation_request_get_target(self, req):
-        target = req.get_target()
+        target = req.target
         assert isinstance(target, FixedTarget)
 
     def test_observation_request_to_string(self, req):
