@@ -2,7 +2,7 @@
 
 import pytest
 from tso.scheduler import scheduler
-from tso.scheduler.utils import generate_requests as gr
+from tso.scheduler.utils import generate_mock_requests as gr
 from astroplan.scheduling import Schedule
 
 N_BLOCKS = 10
@@ -24,7 +24,7 @@ def pytest_generate_tests(metafunc):
 class TestScheduler(object):
 
     params = {
-        'test_generate_schedule': [dict(start_datetime='2019-03-10 19:00', end_datetime='2019-03-12 19:00', requests=gr.generate_requests(N_BLOCKS)), ]
+        'test_generate_schedule': [dict(start_datetime='2019-03-10 19:00', end_datetime='2019-03-12 19:00', requests=gr.generate_mock_requests(N_BLOCKS)), ]
     }
 
     def test_generate_schedule(self, start_datetime, end_datetime, requests):
