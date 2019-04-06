@@ -1,0 +1,39 @@
+{
+    "telescope": {
+        "slew_rate": 0.8,
+        "filters": {
+            "transitions": {
+                "default": 30,
+                "filter": [
+                    {
+                        "from": "B",
+                        "to": "G",
+                        "duration": 10
+                    },
+                    {
+                        "from": "B",
+                        "to": "R",
+                        "duration": 10
+                    },
+                    {
+                        "from": "G",
+                        "to": "B",
+                        "duration": 10
+                    },
+                    {
+                        "from": "R",
+                        "to": "B",
+                        "duration": 10
+                    }
+                ]
+            }
+        }
+    },
+    "db": {
+            "HOST": "127.0.0.1",
+            "PORT": "3306",
+            "DB": "tso",
+            "USER": "tsouser",
+            "PASSWORD": "password"
+    }
+}

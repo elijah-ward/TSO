@@ -19,7 +19,7 @@ def convert_to_cfht(values):
     return observation_blocks
 
 
-def get_all_observations():
+def get_all_observations(db_config):
     """
     Retrieve all observation_blocks found in persistence.
     Potentially dangerous if a large amount of entries exist
@@ -27,7 +27,7 @@ def get_all_observations():
     :return: All observations in TSO persistence
     """
 
-    my_db = persistence_util.get_mysql_connection()
+    my_db = persistence_util.get_mysql_connection(db_config)
     cursor = my_db.cursor(dictionary=True)
     cursor.execute("SELECT * FROM observing_blocks;")
 
@@ -37,6 +37,7 @@ def get_all_observations():
 
 
 def get_observations(
+    db_config,
     min_priority=0,
     remaining_observing_chances=-1,
     observation_duration_min=-1,
@@ -67,7 +68,7 @@ def get_observations(
     # exposure time :: As above, I think this is contiguous_exposure_time_millis
     # read out time :: Not sure where this is
 
-    my_db = persistence_util.get_mysql_connection()
+    my_db = persistence_util.get_mysql_connection(db_config)
     cursor = my_db.cursor(dictionary=True)
     cursor.execute(sql)
 
