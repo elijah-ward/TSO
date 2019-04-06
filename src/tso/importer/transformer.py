@@ -13,19 +13,34 @@ from astropy.coordinates import SkyCoord
 def validate_block(block):
     valid = True
 
+    # Check if the incoming value is an instance of CFHTObservationBlock
     valid = isinstance(block, CFHTObservationBlock)
+
+    # Check if the block has proper sky_address field, which MUST be a comma separated value of floats
+    try:
+        float(block.sky_address.split(',')[0])
+        float(block.sky_address.split(',')[1])
+    except ValueError:
+        valid = False
 
     return valid
 
 
 def block_to_request(block):
+    mapped_sky_address = SkyCoord(
+        ra=float(block.sky_address.split(',')[0]),
+        dec=float(block.sky_address.split(',')[1]),
+        unit=(u.degree, u.degree),
+        frame='icrs'
+    )
+
     return ObservationRequest(
         observation_id=block.observation_block_id,
-        coordinates=block.sky_address, #TODO: Need to convert - unsure of type in DB
-        agency_id="Missing", #TODO: GET this information from the CFHT data
+        coordinates=mapped_sky_address,
+        agency_id="Missing", #TODO: GET this information from the CFHT data???
         priority=block.priority,
         remaining_observing_chances=block.remaining_observing_chances,
-        observation_duration=block.contiguous_exposure_time_millis
+        duration=block.contiguous_exposure_time_millis
     )
 
 

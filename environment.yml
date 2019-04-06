@@ -10,3 +10,4 @@ dependencies:
         - deap==1.2.2
         - mysql-connector-python
         - astroplan
+        - pytest-mock

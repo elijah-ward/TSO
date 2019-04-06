@@ -29,6 +29,7 @@ setup(
         'astropy',
         'astroplan',
         'pytest',
+        'pytest-mock'
         'pandas',
         'deap',
         'mysql-connector-python'
