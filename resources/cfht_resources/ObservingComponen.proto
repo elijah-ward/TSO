@@ -1,0 +1,81 @@
+ObservingComponentImpl{
+	token=18BE91-QZ04H08PJG, 
+	target=TargetImpl{
+		label=0, 
+		version=0, 
+		targetData=token: "18BE91-ft-2000" 
+					name: "target1" 
+					reference_equinox_julian_years: 2000.0 
+					pointing_nameointing_offset{
+						pointing_name: "1" 
+						pointing_offset_coordinate { } 
+					} 
+
+		magnitude { 
+			magnitude_type: "AB" 
+			magnitude: 1.2 
+		}
+
+		temperature_effective: 2000.8 
+		fixed_target { 
+			coordinate { 
+				ra: 30.0 
+				dec: 20.0 
+			} 
+			proper_motion { } 
+		}, 
+		token=18BE91-ft-2000,
+		completedDerivations=[]
+	}, 
+	observingTemplate=ObservingTemplateImpl{
+		label=0, 
+		version=0,
+		observingTemplateData=instrument_configuration { 
+			spirou_configuration { 
+				stokes_parameter: U 
+				mode: Fabry_Perot 
+				sky_observation: After 
+				number_of_sequences: 5 
+			} 
+			etime_or_snr { 
+				desired_snr: 8.0 
+				exposure_time_ms: 5500 
+			} 
+			tracking: SID 
+		} 
+		constraint { 
+			image_quality { 
+				max: 0.6 
+			} 
+			sky_background_max: 999999.99 
+			airmass_max: 8.0 
+			extinction_max: 0.1 
+			name: "Constraint1" 
+			h2o_vapor_max: 0.1 
+		} 
+		telescope_pattern { 
+			offsets { 
+				offset { } 
+			} 
+			config { 
+				name: "SINGLE" 
+				description: "SINGLE" 
+				dithering { } 
+				scale: 1.0 
+				is_system: true 
+			} 
+		} 
+		acquisition_time { 
+			desired_snr: 8.0 
+			exposure_time_ms: 5500 
+		} 
+		token: "18BE91-OT-1" , 
+		token=18BE91-OT-1, 
+		completedDerivations=[]
+	}, 
+	observingBlockToken=18BE91-OG-2000-1, 
+	observingComponentIteration=0, 
+	exposureList=[], 
+	version=0, 
+	observingBlockLabel=0
+} 
