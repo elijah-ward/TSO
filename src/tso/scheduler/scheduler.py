@@ -4,6 +4,7 @@ from astroplan.constraints import TimeConstraint
 from astroplan import download_IERS_A
 from astropy.time import Time
 from astropy import units as u
+from astropy.coordinates import SkyCoord
 
 from tso.importer import data_importer as di
 from tso.scheduler import constraint_aggregator as ca
@@ -20,7 +21,7 @@ def create_transitioner(slew_rate, filters):
     return Transitioner(slew_rate, filters)
 
 
-def generate_schedule(config, start_datetime, end_datetime, requests):
+def generate_schedule(config, start_datetime, end_datetime, requests=None):
 
     # Sometimes a warning arises called OldEarthOrientationDataWarning which means the following line must run to refresh
     # we should find a way to catch this warning and only download when necessary
@@ -32,7 +33,7 @@ def generate_schedule(config, start_datetime, end_datetime, requests):
     # Retrieve global constraints from Constraint Aggregator
     global_constraints = ca.initialize_constraints()
 
-    # These are hard
+    # hardcoded but should come from block
     read_out = 20 * u.second
     n_exp = 5
 
@@ -45,21 +46,7 @@ def generate_schedule(config, start_datetime, end_datetime, requests):
     # half_night_end = Time('2019-03-12 08:00')
     # first_half_night = TimeConstraint(half_night_start, half_night_end)
 
-    # for request in requests:
-
-    #     # target = request.get_target()
-    #     duration = request.observation_duration * u.second
-    #     block = ObservingBlock.from_exposures(target, request.priority,
-    #         duration, n_exp, read_out,
-    #         configuration = {'filter': 'B'},
-    #         constraints = [first_half_night])
-
-    #     print(str(block))
-
-    #     blocks.append(block)
-
-    # deneb_exp = 100 * u.second
-    # m13_exp = 50 * u.second
+    print(requests)
 
     for request in requests:
         for bandpass in ['MSE']:
@@ -67,7 +54,18 @@ def generate_schedule(config, start_datetime, end_datetime, requests):
                                             configuration={'filter': bandpass},
                                             constraints=[])
             blocks.append(block)
-            print('Appending block with Target {} and filter {}'.format(request.target, bandpass))
+            print('Appending block {} with Target {} and filter {}'.format(block, request.target, bandpass))
+
+    # deneb_exp = 100 * u.second
+    # m13_exp = 50 * u.second
+
+    # for target in targets:
+    #     for priority, bandpass in enumerate(['MSE']):
+    #         block = ObservingBlock.from_exposures(target, priority, deneb_exp, n_exp, read_out,
+    #                                         configuration={'filter': bandpass},
+    #                                         constraints=[])
+    #         blocks.append(block)
+    #         print('Appending block with Target {} and filter {}'.format(target, bandpass))
 
 
     prior_scheduler = PriorityScheduler(constraints=global_constraints,

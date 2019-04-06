@@ -18,8 +18,8 @@ def main():
     start_datetime = '2019-03-01 19:00'
     end_datetime = '2019-03-13 19:00'
     schedule = scheduler.generate_schedule(config, start_datetime, end_datetime, requests)
-    print(requests[0].target)
-    # exporter.export_to_console(schedule)
+    print(schedule)
+    exporter.export_to_console(schedule)
 
 if __name__ == '__main__':
     main()
