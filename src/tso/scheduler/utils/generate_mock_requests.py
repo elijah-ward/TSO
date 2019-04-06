@@ -3,7 +3,7 @@ from astropy.coordinates import SkyCoord
 from astropy import units as u
 import random
 
-def generate_requests(n_requests):
+def generate_mock_requests(n_requests):
     reqs = []
     for i in range(n_requests):
         # Build a request and append to reqs list

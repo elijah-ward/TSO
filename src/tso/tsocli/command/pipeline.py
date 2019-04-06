@@ -8,7 +8,7 @@ from tso.importer import data_importer
 from tso.importer import transformer
 from tso.scheduler import scheduler
 from tso.exporter import exporter
-from tso.scheduler.utils import generate_requests as gr
+from tso.scheduler.utils import generate_mock_requests as gr
 
 # TODO: Need to move this to an external config.json with global configs for the tool
 sampleConfigJsonForScheduler = {
@@ -36,7 +36,7 @@ def cli_pipeline(args):
 
     tso_observation_requests = transformer.transform_cfht_observing_blocks(cfht_imported_data)
 
-    schedule = scheduler.generate_schedule(sampleConfigJsonForScheduler, args.startDateTime, args.endDateTime, gr.generate_requests(5))
+    schedule = scheduler.generate_schedule(sampleConfigJsonForScheduler, args.startDateTime, args.endDateTime, gr.generate_mock_requests(5))
 
     exporter.export_to_console(schedule)
     if args.exportToFile:

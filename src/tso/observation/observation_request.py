@@ -17,6 +17,8 @@ class ObservationRequest:
         self.remaining_observing_chances = remaining_observing_chances
         self.duration = duration
         self.target = FixedTarget(coord=coordinates, name=str(observation_id))
+        # coordinates must be SkyCoord(ra=random.uniform(1,360), dec=random.uniform(-90,90), unit=(u.degree, u.degree), frame='icrs')
+        # See scheduler/utils/generate_mock_requests.py for an example
 
     def __str__(self):
         return str(self.observation_id) + " " + \
