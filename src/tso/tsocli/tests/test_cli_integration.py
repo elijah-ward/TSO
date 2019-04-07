@@ -25,6 +25,8 @@ class TestCliIntegration:
 
         arguments = [
             'schedule',
+            '--max-observation-priority',
+            '300',
             '--start-date-time',
             '2019-03-01 19:00',
             '--end-date-time',
