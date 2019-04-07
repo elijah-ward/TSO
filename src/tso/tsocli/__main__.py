@@ -44,13 +44,13 @@ def add_arguments(parser):
     )
     parser.add_argument(
         "--start-date-time",
-        default=datetime.datetime.now(),
-        help="The date time to begin the scheduling"
+        default=datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
+        help="The date time to begin the scheduling. Must be UTC. format - YYYY-MM-DD HH:mm"
     )
     parser.add_argument(
         "--end-date-time",
-        default=datetime.datetime.now() + datetime.timedelta(days=7),
-        help="The date time to end the scheduling"
+        default=(datetime.datetime.now() + datetime.timedelta(days=7)).strftime("%Y-%m-%d %H:%M"),
+        help="The date time to end the scheduling. Must be UTC. format - YYYY-MM-DD HH:mm"
     )
     parser.add_argument(
         "--max-program-priority",
