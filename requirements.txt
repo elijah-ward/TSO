@@ -4,7 +4,6 @@
 astropy
 astroplan
 pytest
-pytest-mock
 deap
 pandas
 mysql-connector-python

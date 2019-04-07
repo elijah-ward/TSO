@@ -1,5 +1,6 @@
 from tso.importer import transformer
 from tso.observation import observation_request, cfht_observation_block
+from unittest.mock import patch
 
 
 def cfht_values():
@@ -62,16 +63,13 @@ class TestTransformer:
 
         assert transformer.validate_block(valid_block) is True
 
-    def test_transformer_should_only_map_valid_blocks(self):
-        invalid_block = cfht_observation_block.CFHTObservationBlock(
-            **invalid_values()
-        )
-        valid_block = cfht_observation_block.CFHTObservationBlock(
-            **valid_values()
-        )
+    @patch('tso.importer.transformer.block_to_request')
+    def test_transformer_should_only_map_valid_blocks(self, mock_transformer_mapping_function):
 
-        transformer.transform_cfht_observing_blocks(
-            [invalid_block, valid_block]
-        )
+        transformer.transform_cfht_observing_blocks([
+            cfht_observation_block.CFHTObservationBlock(**invalid_values()),    # One invalid block
+            cfht_observation_block.CFHTObservationBlock(**valid_values()),      # ....
+            cfht_observation_block.CFHTObservationBlock(**valid_values())       # And 2 valid ones
+        ])
 
-        # TODO : Test This !!! Hint: probably make a spy on the transform function so you can see what is being called
+        assert mock_transformer_mapping_function.call_count is 2
