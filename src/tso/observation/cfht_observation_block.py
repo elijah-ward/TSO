@@ -30,3 +30,5 @@ class CFHTObservationBlock:
         self.version = properties.get('version', -1)
         self.label = properties.get('label', -1)
         self.program_id = properties.get('program_id', -1)
+
+        self.exposure_count = -1

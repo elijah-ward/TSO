@@ -7,14 +7,28 @@ Allows importing TSO data from TSO persistence.
 from tso.observation.cfht_observation_block import CFHTObservationBlock
 from tso.util import persistence as persistence_util
 from sys import maxsize as MAX_SIZE
+import json
 
 
-def convert_to_cfht(values):
+def convert_to_cfht(
+    values,
+    min_program_priority=0,
+    exposure_count_data={}
+):
     observation_blocks = []
     for line_values in values:
-        observation_blocks.append(
-            CFHTObservationBlock(**line_values)
-        )
+
+        new_block = CFHTObservationBlock(**line_values)
+
+        blob_data = json.loads(new_block.observing_block_data)
+        # Filter only those blocks that comply with the program priority
+        if blob_data["program_priority"] >= min_program_priority:
+
+            # For those blocks that are valid, set their exposure count
+            new_block.exposure_count = exposure_count_data.get(new_block.observation_block_id)
+            observation_blocks.append(
+                new_block
+            )
 
     return observation_blocks
 
@@ -32,13 +46,16 @@ def get_all_observations(db_config):
     cursor.execute("SELECT * FROM observing_blocks;")
 
     return convert_to_cfht(
-        cursor.fetchall()
+        cursor.fetchall(),
+        0,
+        get_exposure_counts_per_observation_id(db_config)
     )
 
 
 def get_observations(
     db_config,
     min_priority=0,
+    min_program_priority=0,
     remaining_observing_chances=-1,
     observation_duration_min=-1,
     observation_duration_max=MAX_SIZE
@@ -47,12 +64,6 @@ def get_observations(
     Get CFHT observation blocks with given constraints.
     The default values allow for the maximal amount of requests to be returned,
     or in other words, the default values provide the same functionality
-
-    :param min_priority:                returning list with include only observations with higher priority.
-    :param remaining_observing_chances: returning list will include only observations with fewer chances left
-    :param observation_duration_min:    returning list will include only observations with higher duration
-    :param observation_duration_max:    returning list will include only observations with lower duration
-    :return: The Observation Blocks found
     """
 
     sql = "SELECT * FROM observing_blocks WHERE priority > %s;" % str(min_priority)
@@ -63,16 +74,33 @@ def get_observations(
     if observation_duration_max > 0:
         sql += " AND contiguous_exposure_time_millis <= " + str(observation_duration_max)
 
-    # This is the data that Eli says we need from CFHT
-    # number of exposures :: this might not be within the observing blocks, but in another table
-    # exposure time :: As above, I think this is contiguous_exposure_time_millis
-    # read out time :: Not sure where this is
-
     my_db = persistence_util.get_mysql_connection(db_config)
     cursor = my_db.cursor(dictionary=True)
     cursor.execute(sql)
 
     return convert_to_cfht(
-        cursor.fetchall()
+        cursor.fetchall(),
+        min_program_priority,
+        get_exposure_counts_per_observation_id(db_config)
     )
+
+
+def get_exposure_counts_per_observation_id(db_config):
+    """
+    Get Exposure Counts Per Observation Id
+
+    :return dict with schema -> { observationId: exposureCount }
+    """
+
+    my_db = persistence_util.get_mysql_connection(db_config)
+    cursor = my_db.cursor(dictionary=True)
+    cursor.execute("SELECT observing_block_id, count(*) AS exposure_count FROM exposures GROUP BY observing_block_id;")
+    raw_dict = cursor.fetchall()
+
+    final = {}
+    for sub in raw_dict:
+        final[sub['observing_block_id']] = sub['exposure_count']
+
+    return final
+
 
