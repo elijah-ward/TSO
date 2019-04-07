@@ -34,8 +34,6 @@ def create_transitioner(slew_rate, filter_config):
 
 def generate_schedule(config, start_datetime, end_datetime, requests=None):
 
-    print(requests)
-
     # Sometimes a warning arises called OldEarthOrientationDataWarning which means the following line must run to refresh
     # we should find a way to catch this warning and only download when necessary
 
