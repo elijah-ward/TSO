@@ -72,7 +72,7 @@ def get_observations_with_args(db_config=None, **kwargs):
 def get_observations(
     db_config=None,
     max_observation_priority=MAX_SIZE,
-    max_program_priority=0,
+    max_program_priority=MAX_SIZE,
     max_remaining_observing_chances=-1,
     observation_duration_min=-1,
     observation_duration_max=MAX_SIZE
@@ -99,7 +99,7 @@ def get_observations(
 
     return convert_to_cfht(
         cursor.fetchall(),
-        max_observation_priority,
+        max_program_priority,
         get_exposure_counts_per_observation_id(db_config)
     )
 
