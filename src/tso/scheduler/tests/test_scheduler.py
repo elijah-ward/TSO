@@ -40,6 +40,15 @@ testSchedulerConfig = json.loads(u'''{
 }
 ''')
 
+mock_global_constraint_config = json.loads(u'''{
+    "AirmassConstraint": {
+        "max": 3,
+        "boolean_constraint": "False"
+    },
+    "AtNightConstraint": {}
+}
+''')
+
 
 def pytest_generate_tests(metafunc):
     # called once per each test function
@@ -57,7 +66,13 @@ class TestScheduler(object):
     }
 
     def test_generate_schedule(self, start_datetime, end_datetime, requests):
-        schedule = scheduler.generate_schedule(testSchedulerConfig, start_datetime, end_datetime, requests)
+        schedule = scheduler.generate_schedule(
+            testSchedulerConfig,
+            mock_global_constraint_config,
+            start_datetime,
+            end_datetime,
+            requests
+        )
         assert isinstance(schedule, Schedule)
 
     def test_create_transitioner(self, slew_rate, filter_config):

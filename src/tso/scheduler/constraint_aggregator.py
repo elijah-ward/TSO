@@ -13,8 +13,34 @@ time in the future
 from astroplan.constraints import AtNightConstraint, AirmassConstraint
 
 
-def initialize_constraints():
-    global_constraints = [AirmassConstraint(max=3, boolean_constraint=False),
-                          AtNightConstraint.twilight_civil()]
+def create_unmapped_constraint(*values):
+    return None
+
+
+def create_air_mass_constraint(values):
+    return AirmassConstraint(
+        max=values.get("max"),
+        boolean_constraint=values.get("boolean_constraint")
+    )
+
+
+def create_at_night_constraint(*values):
+    return AtNightConstraint.twilight_civil()
+
+
+constraint_map = {
+    "AirmassConstraint": create_air_mass_constraint,
+    "AtNightConstraint": create_at_night_constraint
+
+    # TODO: Add more!
+}
+
+
+def initialize_constraints(constraint_configuration):
+    global_constraints = []
+    for key, value in constraint_configuration.items():
+        mapped_c = constraint_map.get(key, create_unmapped_constraint)(value)
+        if mapped_c is not None:
+            global_constraints.append(mapped_c)
 
     return global_constraints

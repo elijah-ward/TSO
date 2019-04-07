@@ -41,6 +41,6 @@
             "max": 3,
             "boolean_constraint": "False"
         },
-        "AtNightConstraint.twilight_civil()": null
+        "AtNightConstraint": {}
     }
 }
