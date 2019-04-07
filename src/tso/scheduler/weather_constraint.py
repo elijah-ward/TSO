@@ -1,9 +1,10 @@
 
 from tso.importer import weather_importer
+from astroplan import Constraint
 
 #TODO: Make this class inherit from our Dynamic_Constraint class?
 
-class WeatherConstraint():
+class WeatherConstraint(Constraint):
 	"""Custom constraint to check if weather conditions are sufficiently good
 
 	Dynamic constraint that checks current weather conditions at runtime and determines
