@@ -4,7 +4,7 @@ CLI tests
 
 from tso.tsocli import __main__ as tsocli
 import pytest
-from pytest_mock import mocker
+from unittest.mock import patch
 
 
 class TestCli:
@@ -33,13 +33,18 @@ class TestCli:
         assert pytest_wrapped_e_pseudo_name.type == SystemExit
         assert pytest_wrapped_e_pseudo_name.value.code == 1
 
-    def test_cli_should_call_pipeline_with_default_args(self):
+    @patch('tso.tsocli.command.cli_pipeline')
+    def test_cli_should_call_pipeline_when_successful(self, mock_pipeline):
+        tsocli.main([
+            'schedule',
+            '--startDateTime',
+            '2019-03-01 19:00',
+            '--endDateTime',
+            '2019-03-12 19:00',
+            '--exportToFile',
+            '--exportToBrowser'
+        ])
 
-        # TODO: Mock out the COMMAND import that TSO Cli Uses
-        # TODO: TEST IS FAILING FAILING FAILING
-
-        mocker.patch('tsocli.command')
-
-        tsocli.main("""schedule --startDateTime "2019-03-01 19:00" --endDateTime "2019-03-12 19:00" --exportToFile --exportToBrowser""".split(" "))
+        assert mock_pipeline.called
 
 

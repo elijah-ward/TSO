@@ -14,7 +14,8 @@ def validate_block(block):
     valid = True
 
     # Check if the incoming value is an instance of CFHTObservationBlock
-    valid = isinstance(block, CFHTObservationBlock)
+    if not isinstance(block, CFHTObservationBlock):
+        return False
 
     # Check if the block has proper sky_address field, which MUST be a comma separated value of floats
     try:
