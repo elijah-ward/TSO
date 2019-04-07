@@ -27,7 +27,7 @@ class WeatherConstraint(Constraint):
 	
 	"""
 
-	def __init__(self, conditions):
+	def __init__(self, conditions, currentDate = True):
 		"""Custom dynamic constraint that evaluates current weather conditions
 		
 		"""
