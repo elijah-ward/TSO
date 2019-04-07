@@ -11,9 +11,13 @@ import os
 from pathlib import Path
 from configuration.config import Config
 
-def parse(conf_filepath):
+def parse(conf_filepath, root_path=None):
 
-    current_dir = os.getcwd()
+    if root_path is None:
+        current_dir = os.getcwd()
+    else:
+        current_dir = root_path
+
     file_location = '{}/{}'.format(current_dir, conf_filepath)
     print(file_location)
 
