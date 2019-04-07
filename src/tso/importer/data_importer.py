@@ -91,7 +91,7 @@ def get_observations(
     if db_config is None:
         raise RuntimeError("Error :: Cannot import without database configuration")
 
-    sql = "SELECT * FROM observing_blocks WHERE priority < %s;" % str(min_priority)
+    sql = "SELECT * FROM observing_blocks WHERE priority > %s;" % str(min_priority)
     if remaining_observing_chances > 0:
         sql += " AND remaining_observing_chances < " + str(remaining_observing_chances)
     if observation_duration_min > 0:
