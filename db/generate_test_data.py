@@ -115,16 +115,17 @@ exposure_sql = "INSERT INTO exposures "\
 
 
 mode = sys.argv[1]
+n_rows = int(sys.argv[2])
 
 if mode == 'file':
     statements = []
 
     statements.append("# ---------------- Observation Mock Data ----------------")
-    for v in generate_mock_observation_values(100):
+    for v in generate_mock_observation_values(n_rows):
         statements.append(observation_sql % v)
 
     statements.append("# ---------------- Exposures Mock Data ----------------")   
-    for v in generate_mock_exposure_values(100):
+    for v in generate_mock_exposure_values(n_rows):
         statements.append(exposure_sql % v) 
     filename = "XXXX_Generated_TSO_Test_Data.sql"
     with open(filename, "w") as f:
@@ -142,11 +143,11 @@ elif mode == 'sql':
 
     my_cursor.executemany(
         observation_sql,
-        generate_mock_observation_values(100)
+        generate_mock_observation_values(n_rows)
     )
     my_cursor.executemany(
         exposure_sql,
-        generate_mock_exposure_values(100)
+        generate_mock_exposure_values(n_rows)
     )
 
     my_db.commit()
