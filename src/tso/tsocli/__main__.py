@@ -34,14 +34,34 @@ def initialize_sub_parser(sub_parser):
 
 
 def add_arguments(parser):
-    parser.add_argument("--configFile", default="tso_config.json", help="The local path to your runtime config file (See the included tso_config.json for an example of format)")
-    parser.add_argument("--startDateTime", help="The date time to begin the scheduling")
-    parser.add_argument("--endDateTime", help="The date time to end the scheduling")
-    parser.add_argument("--exportToFile", action='store_true', help="Whether to export to a file or not")
-    parser.add_argument("--exportToBrowser", action='store_true', help="Display schedule in browser")
+    parser.add_argument(
+        "--configFile", 
+        default="tso_config.json", 
+        help="The local path to your runtime config file (See the included tso_config.json for an example of format)"
+    )
 
+    parser.add_argument(
+        "--startDateTime",
+        help="The date time to begin the scheduling"
+    )
+    parser.add_argument(
+        "--endDateTime",
+        help="The date time to end the scheduling"
+    )
+    parser.add_argument(
+        "--exportToFile",
+        help="Whether to export to a file or not",
+        action='store_true'
+    )
+    parser.add_argument(
+        "--exportToBrowser",
+        help="Display schedule in browser",
+        action='store_true'
+    )
 
-def main():
+def main(sys_args=None):
+    if sys_args is None:
+        sys_args = sys.argv[1:]
 
     tso_epilog = """
          ______________
@@ -62,13 +82,13 @@ def main():
 
     main_sub_parser = initialize_sub_parser(subparsers)
 
-    args = tso_parser.parse_args()
+    args = tso_parser.parse_args(sys_args)
 
     # Display the hep if no arguments are passed
-    if len(sys.argv) == 1:
+    if len(sys_args) == 0:
         tso_parser.print_help(sys.stderr)
         sys.exit(1)
-    elif (args.which == 's' or args.which == 'schedule') and len(sys.argv) == 2:
+    elif (args.which == 's' or args.which == 'schedule') and len(sys_args) == 1:
         main_sub_parser.print_help()
         sys.exit(1)
 
@@ -78,7 +98,3 @@ def main():
 
     # Call the Pipeline with all arguments and the loaded config file
     args.command(args, config)
-
-
-if __name__ == '__main__':
-    main()
