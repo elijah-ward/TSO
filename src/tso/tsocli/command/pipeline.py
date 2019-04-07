@@ -10,14 +10,6 @@ from tso.scheduler import scheduler
 from tso.exporter import exporter
 from tso.scheduler.utils import generate_mock_requests as gr
 
-# TODO: Need to move this to an external config.json with global configs for the tool
-sampleConfigJsonForScheduler = {
-    'slew_rate': 0.8,
-    'filters': {
-        'filter': {('MSE', 'EXAMPLE'): 10 }
-    }
-}
-
 tso_epilog = """\n\n
      ______________
     /_  __/ __/ __ \\

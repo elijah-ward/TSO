@@ -1,10 +1,8 @@
 """
 Configuration Parser
 
-Takes a configurations.json file that will store some end-user configuration values
-and returns them to the application.
-
-At the moment this is scoped to the Database configuration.
+Takes a path to the desired config file relative to the current working directory
+that will store some end-user configuration values and returns them to the application.
 
 """
 
