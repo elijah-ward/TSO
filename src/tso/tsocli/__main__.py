@@ -36,7 +36,7 @@ def initialize_sub_parser(sub_parser):
 def add_arguments(parser):
     parser.add_argument(
         "--config-file",
-        default="tso_config.json", 
+        default="tso_config.json",
         help="The local path to your runtime config file (See the included tso_config.json for an example of format)"
     )
     parser.add_argument(
@@ -48,8 +48,12 @@ def add_arguments(parser):
         help="The date time to end the scheduling"
     )
     parser.add_argument(
-        "--program-priority",
-        help="The program priority to query against"
+        "--max-program-priority",
+        help="The maximum program priority to query against (1 is highest priority)"
+    )
+    parser.add_argument(
+        "--max-observation-priority",
+        help="The maximum block priority to query against (1 is highest priority)"
     )
     parser.add_argument(
         "--remaining-observing-chances",
