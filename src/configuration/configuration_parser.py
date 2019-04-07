@@ -9,14 +9,16 @@ At the moment this is scoped to the Database configuration.
 """
 
 import json
+import os
 from pathlib import Path
+from configuration.config import Config
 
-script_location = Path(__file__).absolute().parent
-file_location = script_location / 'configuration.json'
+def parse(conf_filepath):
 
-with open(file_location, 'r') as f:
-    config = json.load(f)
+    current_dir = os.getcwd()
+    file_location = '{}/{}'.format(current_dir, conf_filepath)
+    print(file_location)
 
-
-def get_database_config():
-    return config["DB_CONFIG"]
+    with open(file_location, 'r') as f:
+        config = json.load(f)
+        return Config(config)

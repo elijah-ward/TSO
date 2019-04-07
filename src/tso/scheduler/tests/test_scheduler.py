@@ -1,18 +1,44 @@
 # NOTE: This requires a functional change to test scheduler.py - it was ported over from the genetic algorithm scheduler because the "generate tests" pattern may be useful
 
 import pytest
+import json
 from tso.scheduler import scheduler
 from tso.scheduler.utils import generate_mock_requests as gr
 from astroplan.scheduling import Schedule
 
 N_BLOCKS = 10
 
-testSchedulerConfig = {
-    'slew_rate': 0.8,
-    'filters': {
-        'filter': {('MSE', 'EXAMPLE'): 10 }
+testSchedulerConfig = json.loads(u'''{
+    "slew_rate": 0.8,
+    "filters": {
+        "transitions": {
+            "default": 30,
+            "filter": [
+                {
+                    "from": "B",
+                    "to": "G",
+                    "duration": 10
+                },
+                {
+                    "from": "B",
+                    "to": "R",
+                    "duration": 10
+                },
+                {
+                    "from": "G",
+                    "to": "B",
+                    "duration": 10
+                },
+                {
+                    "from": "R",
+                    "to": "B",
+                    "duration": 10
+                }
+            ]
+        }
     }
 }
+''')
 
 def pytest_generate_tests(metafunc):
     # called once per each test function

@@ -13,11 +13,22 @@ import random
 import warnings
 import json
 
-def create_transitioner(slew_rate, filters):
+def create_transitioner(slew_rate, filter_config):
     # Apply atropy units to all config values
     slew_rate = slew_rate * u.deg / u.second
-    for key in filters['filter'].keys():
-        filters['filter'][key] = filters['filter'][key] * u.second
+
+    # Gather filter transitions from the provided config
+    # This iteration is heavily subscriptive to the structure within the example config file
+    filters = {}
+    filters['filter'] = {}
+    for transition in filter_config['transitions']['filter']:
+        transition_from = transition['from']
+        transition_to = transition['to']
+        filter_pair = (transition_from, transition_to)
+        filters['filter'][filter_pair] = transition['duration'] * u.second
+
+    # If a transition isn't supplied for a filter pair, the default duration is used
+    filters['filter']['default'] = filter_config['transitions']['default'] * u.second
     return Transitioner(slew_rate, filters)
 
 
@@ -49,23 +60,12 @@ def generate_schedule(config, start_datetime, end_datetime, requests=None):
     print(requests)
 
     for request in requests:
-        for bandpass in ['MSE']:
+        for bandpass in ['B', 'G', 'R']:
             block = ObservingBlock.from_exposures(request.target, request.priority, request.duration, n_exp, read_out,
                                             configuration={'filter': bandpass},
                                             constraints=[])
             blocks.append(block)
             print('Appending block {} with Target {} and filter {}'.format(block, request.target, bandpass))
-
-    # deneb_exp = 100 * u.second
-    # m13_exp = 50 * u.second
-
-    # for target in targets:
-    #     for priority, bandpass in enumerate(['MSE']):
-    #         block = ObservingBlock.from_exposures(target, priority, deneb_exp, n_exp, read_out,
-    #                                         configuration={'filter': bandpass},
-    #                                         constraints=[])
-    #         blocks.append(block)
-    #         print('Appending block with Target {} and filter {}'.format(target, bandpass))
 
 
     prior_scheduler = PriorityScheduler(constraints=global_constraints,

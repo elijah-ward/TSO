@@ -10,8 +10,11 @@ With other functions in this module as primary containers of the complexity
 
 import sys
 import argparse
+import os
+import json
 
 from . import command as tso_command
+from configuration import configuration_parser
 
 
 def initialize_sub_parser(sub_parser):
@@ -32,6 +35,12 @@ def initialize_sub_parser(sub_parser):
 
 def add_arguments(parser):
     parser.add_argument(
+        "--configFile", 
+        default="tso_config.json", 
+        help="The local path to your runtime config file (See the included tso_config.json for an example of format)"
+    )
+
+    parser.add_argument(
         "--startDateTime",
         help="The date time to begin the scheduling"
     )
@@ -49,7 +58,6 @@ def add_arguments(parser):
         help="Display schedule in browser",
         action='store_true'
     )
-
 
 def main(sys_args=None):
     if sys_args is None:
@@ -84,5 +92,9 @@ def main(sys_args=None):
         main_sub_parser.print_help()
         sys.exit(1)
 
-    # Call the Pipeline with all arguments
-    args.command(args)
+    # Load the supplied config file
+    if args.configFile is not None:
+        config = configuration_parser.parse(args.configFile)
+
+    # Call the Pipeline with all arguments and the loaded config file
+    args.command(args, config)
