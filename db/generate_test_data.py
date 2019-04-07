@@ -10,9 +10,9 @@ Producing the mock data...
 import random
 import sys
 from datetime import datetime
-
+import json
 from tso.util import persistence as persistence_util
-
+from configuration import configuration_parser
 
 def clear_database(db, cursor):
     cursor.execute("TRUNCATE TABLE observing_blocks;")
@@ -24,11 +24,23 @@ def generate_mock_observation_values():
     values = []
     for x in range(0, 1000):
         # TODO: Update to include valid and meaningful values
-
+        filters = random.sample(population=['r', 'g', 'b'], k=random.randint(1,3))
+        blob_data = {"constraints" : {
+                            'image_quality' : -1, 
+                            'sky_background_max': -1,
+                            'airmass_max': -1,
+                            'extinction_max': -1,
+                            'name': -1,
+                            'h2o_vapor_max': -1,
+                            'moon_distance': random.uniform(0,360)
+                    },
+                    "filters": filters,
+                    'program_priority': random.randint(0,1000)
+                    }
         values.append({
             'token': "Token_%s" % x,
             'observing_groups_id': 123,
-            'observing_block_data': "-1",
+            'observing_block_data': json.dumps(blob_data),
             'candidate': -1,
             'sky_address': "%f,%f" % (random.uniform(0, 360), random.uniform(-90, 90)),
             'public': -1,
@@ -36,7 +48,7 @@ def generate_mock_observation_values():
             'min_qrun_millis': -1,
             'max_qrun_millis': -1,
             'contiguous_exposure_time_millis': random.randint(100, 18000),
-            'priority': random.randint(1, 100),
+            'priority': random.randint(1, 10000),
             'next_observable_at': -1,
             'unobservable_at': -1,
             'remaining_observing_chances': random.randint(1, 10),
@@ -45,7 +57,8 @@ def generate_mock_observation_values():
             'dirty': -1,
             'version': -1,
             'label': x,
-            'program_id': x
+            'program_id': x,
+            'num_exposures' : random.randint(1, 5)
         })
 
     return values
@@ -79,7 +92,8 @@ if mode == 'file':
 
     print("Generate %s!" % filename)
 elif mode == 'sql':
-    my_db = persistence_util.get_mysql_connection()
+    my_db = persistence_util.get_mysql_connection(
+       configuration_parser.parse("tso_config.json").get_database_config())
     my_cursor = my_db.cursor()
 
     # Ensure that the table is clear
