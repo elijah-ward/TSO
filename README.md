@@ -77,6 +77,7 @@ Methodology
 from root of project
 1. Using `generate_test_data.py sql n` -- Connecting directly to DB through python and executing statements
 2. Using `generate_test_data.py file n` -- Outputting a file locally to be used with flyway/Docker....other methods.
+
 In both of the above, n is an integer to dictate the number of observation blocks created. 
 
 #### Cleaning the database
