@@ -11,6 +11,7 @@ import os
 from pathlib import Path
 from configuration.config import Config
 
+
 def parse(conf_filepath, root_path=None):
 
     if root_path is None:

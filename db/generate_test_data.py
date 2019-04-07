@@ -49,7 +49,7 @@ def generate_mock_observation_values(n):
             'active_runid': x,
             'min_qrun_millis': -1,
             'max_qrun_millis': -1,
-            'contiguous_exposure_time_millis': random.randint(100, 18000),
+            'contiguous_exposure_time_millis': random.randint(1000, 18000),
             'priority': random.randint(1, 10000),
             'next_observable_at': -1,
             'unobservable_at': -1,

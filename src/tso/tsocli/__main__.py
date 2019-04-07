@@ -35,29 +35,50 @@ def initialize_sub_parser(sub_parser):
 
 def add_arguments(parser):
     parser.add_argument(
-        "--configFile", 
+        "--config-file",
         default="tso_config.json", 
         help="The local path to your runtime config file (See the included tso_config.json for an example of format)"
     )
-
     parser.add_argument(
-        "--startDateTime",
+        "--start-date-time",
         help="The date time to begin the scheduling"
     )
     parser.add_argument(
-        "--endDateTime",
+        "--end-date-time",
         help="The date time to end the scheduling"
     )
     parser.add_argument(
-        "--exportToFile",
+        "--program-priority",
+        help="The program priority to query against"
+    )
+    parser.add_argument(
+        "--remaining-observing-chances",
+        help="Include only those blocks whose remaining observing chances is less than this value"
+    )
+    parser.add_argument(
+        "--observation-duration-min",
+        help="Include only those blocks whose duration is greater than or equal to this"
+    )
+    parser.add_argument(
+        "--observation-duration-max",
+        help="Include only those blocks whose duration is less than or equal to this"
+    )
+    parser.add_argument(
+        "--no-weather-constraints",
+        help="Whether weather should be imported for this schedule",
+        action="store_true"
+    )
+    parser.add_argument(
+        "--export-to-file",
         help="Whether to export to a file or not",
         action='store_true'
     )
     parser.add_argument(
-        "--exportToBrowser",
+        "--export-to-browser",
         help="Display schedule in browser",
         action='store_true'
     )
+
 
 def main(sys_args=None):
     if sys_args is None:
@@ -93,8 +114,8 @@ def main(sys_args=None):
         sys.exit(1)
 
     # Load the supplied config file
-    if args.configFile is not None:
-        config = configuration_parser.parse(args.configFile)
+    if args.config_file is not None:
+        config = configuration_parser.parse(args.config_file)
 
     # Call the Pipeline with all arguments and the loaded config file
     args.command(args, config)

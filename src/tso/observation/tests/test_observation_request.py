@@ -5,34 +5,39 @@ from astropy import units as u
 from astropy.coordinates import SkyCoord
 from astroplan import FixedTarget
 
+request_variables = {
+    "observation_id": 69,
+    "coordinates": SkyCoord(ra=10.625*u.degree, dec=41.2*u.degree, frame='icrs'),
+    "agency_id": 2,
+    "priority": 8,
+    "remaining_observing_chances": 3,
+    "duration": 6000,
+    "exposure_count": 5,
+    "constraint_meta": {}
+}
+
 
 @pytest.fixture(scope="module")
 def req():
-    c = SkyCoord(ra=10.625*u.degree, dec=41.2*u.degree, frame='icrs')
-    observation_id = 69
-    coordinates = c
-    agency_id = 2
-    priority = 8
-    remaining_observing_chances = 3
-    observation_duration = 6000
-    req = observation_request.ObservationRequest(
-        observation_id, coordinates, agency_id, priority, remaining_observing_chances, observation_duration
+    return observation_request.ObservationRequest(
+        request_variables["observation_id"],
+        request_variables["coordinates"],
+        request_variables["agency_id"],
+        request_variables["priority"],
+        request_variables["remaining_observing_chances"],
+        request_variables["duration"],
+        request_variables["exposure_count"],
+        request_variables["constraint_meta"]
     )
-    return req
+
 
 @pytest.fixture(scope="module")
 def variables():
-    return {
-        "observation_id": 69,
-        "coordinates": SkyCoord(ra=10.625*u.degree, dec=41.2*u.degree, frame='icrs'),
-        "agency_id": 2,
-        "priority": 8,
-        "remaining_observing_chances": 3,
-        "duration": 6000
-    }
+    return request_variables
 
 
 class TestObservationRequest:
+
     def test_dummy_test(self):
         # Shows the limitsof a SkyCoord
         # a) declination < -90
@@ -75,5 +80,7 @@ class TestObservationRequest:
                 variables["agency_id"],
                 variables["priority"],
                 variables["remaining_observing_chances"],
-                variables["duration"]
+                variables["duration"],
+                variables["exposure_count"],
+                variables["constraint_meta"]
             )

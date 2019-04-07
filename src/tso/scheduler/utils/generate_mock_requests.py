@@ -3,6 +3,7 @@ from astropy.coordinates import SkyCoord
 from astropy import units as u
 import random
 
+
 def generate_mock_requests(n_requests):
     reqs = []
     for i in range(n_requests):
@@ -13,7 +14,18 @@ def generate_mock_requests(n_requests):
         priority = i+1
         remaining_chances = 1
         duration = 60.0 * u.second
-        req = ObservationRequest(obs_id, coordinates, agency_id, priority, remaining_chances, duration)
+        exposure_count = 5
+        meta_constraint = {}
+        req = ObservationRequest(
+            obs_id,
+            coordinates,
+            agency_id,
+            priority,
+            remaining_chances,
+            duration,
+            exposure_count,
+            meta_constraint
+        )
 
         reqs.append(req)
 

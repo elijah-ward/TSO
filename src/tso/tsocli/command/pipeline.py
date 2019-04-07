@@ -22,17 +22,25 @@ tso_epilog = """\n\n
 
 def cli_pipeline(args, config):
     print(tso_epilog)
-    print(args)
 
-    cfht_imported_data = data_importer.get_observations(config.get_database_config())
+    cfht_imported_data = data_importer.get_observations_with_args(
+        db_config=config.get_database_config(),
+        **vars(args)
+    )
 
     tso_observation_requests = transformer.transform_cfht_observing_blocks(cfht_imported_data)
+    mock_requests = gr.generate_mock_requests(5)
 
-    schedule = scheduler.generate_schedule(config.get_telescope_config(), args.startDateTime, args.endDateTime, gr.generate_mock_requests(5))
+    schedule = scheduler.generate_schedule(
+        config.get_telescope_config(),
+        args.start_date_time,
+        args.end_date_time,
+        tso_observation_requests if True else mock_requests  # Set to False to use the mock_requests
+    )
 
     exporter.export_to_console(schedule)
-    if args.exportToFile:
+    if args.export_to_file:
         exporter.export_to_file(schedule)
 
-    if args.exportToBrowser:
+    if args.export_to_browser:
         exporter.export_to_browser(schedule)

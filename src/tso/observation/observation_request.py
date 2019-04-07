@@ -11,16 +11,22 @@ class ObservationRequest:
         agency_id,
         priority,
         remaining_observing_chances,
-        duration
+        duration,
+        exposure_count,
+        constraint_meta
     ):
         if not isinstance(coordinates, SkyCoord):
             raise RuntimeError("Constructor Error :: Coordinates have not been mapped to Astropy SkyCoord Class")
+
         self.observation_id = observation_id
         self.coordinates = coordinates
         self.agency_id = agency_id
         self.priority = priority
         self.remaining_observing_chances = remaining_observing_chances
         self.duration = duration
+        self.exposure_count = exposure_count
+        self.constraint_meta = constraint_meta
+
         self.target = FixedTarget(coord=coordinates, name=str(observation_id))
 
     def __str__(self):

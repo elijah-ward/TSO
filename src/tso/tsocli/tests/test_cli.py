@@ -37,12 +37,12 @@ class TestCli:
     def test_cli_should_call_pipeline_when_successful(self, mock_pipeline):
         tsocli.main([
             'schedule',
-            '--startDateTime',
+            '--start-date-time',
             '2019-03-01 19:00',
-            '--endDateTime',
+            '--end-date-time',
             '2019-03-12 19:00',
-            '--exportToFile',
-            '--exportToBrowser'
+            '--export-to-file',
+            '--export-to-browser'
         ])
 
         assert mock_pipeline.called

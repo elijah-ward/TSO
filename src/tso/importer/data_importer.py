@@ -33,13 +33,16 @@ def convert_to_cfht(
     return observation_blocks
 
 
-def get_all_observations(db_config):
+def get_all_observations(db_config=None):
     """
     Retrieve all observation_blocks found in persistence.
     Potentially dangerous if a large amount of entries exist
 
     :return: All observations in TSO persistence
     """
+
+    if db_config is None:
+        raise RuntimeError("Error :: Cannot import without database configuration")
 
     my_db = persistence_util.get_mysql_connection(db_config)
     cursor = my_db.cursor(dictionary=True)
@@ -52,8 +55,28 @@ def get_all_observations(db_config):
     )
 
 
+def get_observations_with_args(db_config=None, **kwargs):
+    if db_config is None:
+        raise RuntimeError("Error :: Cannot import without database configuration")
+
+    # Remove all the keys that are none
+    non_empty_values = {}
+    for key, value in kwargs.items():
+        if value is not None:
+            non_empty_values[key] = value
+
+    return get_observations(
+        db_config=db_config,
+        min_priority=0,
+        min_program_priority=non_empty_values.get("program_priority", 0),
+        remaining_observing_chances=non_empty_values.get("remaining_chances", -1),
+        observation_duration_min=non_empty_values.get("observation_duration_min", -1),
+        observation_duration_max=non_empty_values.get("observation_duration_max", MAX_SIZE)
+    )
+
+
 def get_observations(
-    db_config,
+    db_config=None,
     min_priority=0,
     min_program_priority=0,
     remaining_observing_chances=-1,
@@ -65,6 +88,8 @@ def get_observations(
     The default values allow for the maximal amount of requests to be returned,
     or in other words, the default values provide the same functionality
     """
+    if db_config is None:
+        raise RuntimeError("Error :: Cannot import without database configuration")
 
     sql = "SELECT * FROM observing_blocks WHERE priority > %s;" % str(min_priority)
     if remaining_observing_chances > 0:
@@ -85,12 +110,15 @@ def get_observations(
     )
 
 
-def get_exposure_counts_per_observation_id(db_config):
+def get_exposure_counts_per_observation_id(db_config=None):
     """
     Get Exposure Counts Per Observation Id
 
     :return dict with schema -> { observationId: exposureCount }
     """
+
+    if db_config is None:
+        raise RuntimeError("Error :: Cannot import without database configuration")
 
     my_db = persistence_util.get_mysql_connection(db_config)
     cursor = my_db.cursor(dictionary=True)

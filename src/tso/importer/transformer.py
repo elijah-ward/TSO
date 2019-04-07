@@ -8,6 +8,7 @@ from tso.observation.observation_request import ObservationRequest
 from tso.observation.cfht_observation_block import CFHTObservationBlock
 from astropy import units as u
 from astropy.coordinates import SkyCoord
+import json
 
 
 def validate_block(block):
@@ -41,7 +42,9 @@ def block_to_request(block):
         agency_id="Missing", #TODO: GET this information from the CFHT data???
         priority=block.priority,
         remaining_observing_chances=block.remaining_observing_chances,
-        duration=block.contiguous_exposure_time_millis
+        duration=(block.contiguous_exposure_time_millis / 1000.0) * u.second,
+        exposure_count=block.exposure_count,
+        constraint_meta=json.loads(block.observing_block_data)
     )
 
 
