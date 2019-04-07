@@ -57,8 +57,6 @@ def generate_schedule(config, start_datetime, end_datetime, requests=None):
     # half_night_end = Time('2019-03-12 08:00')
     # first_half_night = TimeConstraint(half_night_start, half_night_end)
 
-    print(requests)
-
     for request in requests:
         for bandpass in ['B', 'G', 'R']:
             block = ObservingBlock.from_exposures(request.target, request.priority, request.duration, n_exp, read_out,
