@@ -12,6 +12,9 @@ import sys
 import argparse
 import os
 import json
+import datetime
+from sys import maxsize as MAX_SIZE
+
 
 from . import command as tso_command
 from configuration import configuration_parser
@@ -41,30 +44,37 @@ def add_arguments(parser):
     )
     parser.add_argument(
         "--start-date-time",
+        default=datetime.datetime.now(),
         help="The date time to begin the scheduling"
     )
     parser.add_argument(
         "--end-date-time",
+        default=datetime.datetime.now() + datetime.timedelta(days=7),
         help="The date time to end the scheduling"
     )
     parser.add_argument(
         "--max-program-priority",
+        default=MAX_SIZE,
         help="The maximum program priority to query against (1 is highest priority)"
     )
     parser.add_argument(
         "--max-observation-priority",
+        default=MAX_SIZE,
         help="The maximum block priority to query against (1 is highest priority)"
     )
     parser.add_argument(
-        "--remaining-observing-chances",
+        "--max-remaining-observing-chances",
+        default=MAX_SIZE,
         help="Include only those blocks whose remaining observing chances is less than this value"
     )
     parser.add_argument(
         "--observation-duration-min",
+        default=0,
         help="Include only those blocks whose duration is greater than or equal to this"
     )
     parser.add_argument(
         "--observation-duration-max",
+        default=MAX_SIZE,
         help="Include only those blocks whose duration is less than or equal to this"
     )
     parser.add_argument(
