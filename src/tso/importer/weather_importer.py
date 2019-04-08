@@ -75,7 +75,7 @@ class WeatherImporter():
 					# Formatting all of tomorrow's weather
 					if n == 0:
 						if date == today + timedelta(days=1):
-							currentDict["Date"] = date.strftime('%d/%m/%y')
+							currentDict["Date"] = date.strftime('%Y-%d-%m')
 							currentDict["Time"] = time
 							currentDict["Weather"] = i['weather'][0]['main']
 							currentDict["Humidity"] = i['main']['humidity']
@@ -87,7 +87,7 @@ class WeatherImporter():
 					# Formatting all weather info for two days from now
 					elif n == 1:
 						if date == today + timedelta(days=2):
-							currentDict["Date"] = date.strftime('%d/%m/%y')
+							currentDict["Date"] = date.strftime('%Y-%d-%m')
 							currentDict["Time"] = time
 							currentDict["Weather"] = i['weather'][0]['main']
 							currentDict["Humidity"] = i['main']['humidity']
@@ -99,7 +99,7 @@ class WeatherImporter():
 					# Formatting all weather info for three days from now
 					elif n == 2:
 						if date == today + timedelta(days=3):
-							currentDict["Date"] = date.strftime('%d/%m/%y')
+							currentDict["Date"] = date.strftime('%Y-%d-%m')
 							currentDict["Time"] = time
 							currentDict["Weather"] = i['weather'][0]['main']
 							currentDict["Humidity"] = i['main']['humidity']
@@ -111,7 +111,7 @@ class WeatherImporter():
 					# Formatting all weather info for four days from now
 					elif n ==3:
 						if date == today + timedelta(days=4):
-							currentDict["Date"] = date.strftime('%d/%m/%y')
+							currentDict["Date"] = date.strftime('%Y-%d-%m')
 							currentDict["Time"] = time
 							currentDict["Weather"] = i['weather'][0]['main']
 							currentDict["Humidity"] = i['main']['humidity']
@@ -121,7 +121,7 @@ class WeatherImporter():
 
 					else:
 						if date == today + timedelta(days=5):
-							currentDict["Date"] = date.strftime('%d/%m/%y')
+							currentDict["Date"] = date.strftime('%Y-%d-%m')
 							currentDict["Time"] = time
 							currentDict["Weather"] = i['weather'][0]['main']
 							currentDict["Humidity"] = i['main']['humidity']
@@ -134,7 +134,8 @@ class WeatherImporter():
 			
 
 #conditions = ['Thunderstorm', 'Drizzle', 'Rain', 'Snow', 'Atmosphere', 'Clear', 'Clouds']
-#	weather = WeatherImporter.getWeather(days=n)
+weather = WeatherImporter.getWeather(days=3)
+print(weather)
 #	print ("n = " + str(n) + " Length = " + str(len(weather)))
 
 

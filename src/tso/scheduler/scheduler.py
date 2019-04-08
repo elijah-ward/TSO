@@ -43,8 +43,11 @@ def generate_schedule(config, global_constraint_configuration, start_datetime, e
     transitioner = create_transitioner(config['slew_rate'], config['filters'])
 
     # Retrieve global constraints from Constraint Aggregator
+
     global_constraints = ca.initialize_constraints(
-        global_constraint_configuration
+        global_constraint_configuration,
+        start_datetime,
+        end_datetime
     )
 
     # hardcoded but should come from block
