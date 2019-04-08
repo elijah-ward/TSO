@@ -6,4 +6,5 @@ astroplan
 pytest
 deap
 pandas
+requests
 mysql-connector-python

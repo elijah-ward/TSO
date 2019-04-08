@@ -13,6 +13,7 @@ import random
 import warnings
 import json
 
+
 def create_transitioner(slew_rate, filter_config):
     # Apply atropy units to all config values
     slew_rate = slew_rate * u.deg / u.second
@@ -32,7 +33,7 @@ def create_transitioner(slew_rate, filter_config):
     return Transitioner(slew_rate, filters)
 
 
-def generate_schedule(config, start_datetime, end_datetime, requests=None):
+def generate_schedule(config, global_constraint_configuration, start_datetime, end_datetime, requests=None):
 
     # Sometimes a warning arises called OldEarthOrientationDataWarning which means the following line must run to refresh
     # we should find a way to catch this warning and only download when necessary
@@ -42,7 +43,12 @@ def generate_schedule(config, start_datetime, end_datetime, requests=None):
     transitioner = create_transitioner(config['slew_rate'], config['filters'])
 
     # Retrieve global constraints from Constraint Aggregator
-    global_constraints = ca.initialize_constraints(start_datetime, end_datetime)
+
+    global_constraints = ca.initialize_constraints(
+        global_constraint_configuration,
+        start_datetime,
+        end_datetime
+    )
 
     # hardcoded but should come from block
     read_out = 20 * u.second
@@ -59,16 +65,23 @@ def generate_schedule(config, start_datetime, end_datetime, requests=None):
 
     for request in requests:
         for bandpass in ['B', 'G', 'R']:
-            block = ObservingBlock.from_exposures(request.target, request.priority, request.duration, n_exp, read_out,
-                                            configuration={'filter': bandpass},
-                                            constraints=[])
+            block = ObservingBlock.from_exposures(
+                request.target,
+                request.priority,
+                request.duration,
+                n_exp,
+                read_out,
+                configuration={'filter': bandpass},
+                constraints=[]
+            )
             blocks.append(block)
             print('Appending block {} with Target {} and filter {}'.format(block, request.target, bandpass))
 
-
-    prior_scheduler = PriorityScheduler(constraints=global_constraints,
-                                          observer=cfht,
-                                          transitioner=transitioner)
+    prior_scheduler = PriorityScheduler(
+        constraints=global_constraints,
+        observer=cfht,
+        transitioner=transitioner
+    )
 
     priority_schedule = Schedule(Time(start_datetime), Time(end_datetime))
 

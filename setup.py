@@ -31,7 +31,8 @@ setup(
         'pytest',
         'pandas',
         'deap',
-        'mysql-connector-python'
+        'mysql-connector-python',
+        'requests'
     ],
     entry_points={
         'console_scripts': [

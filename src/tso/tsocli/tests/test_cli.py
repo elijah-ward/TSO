@@ -4,7 +4,10 @@ CLI tests
 
 from tso.tsocli import __main__ as tsocli
 import pytest
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock, mock_open
+
+
+mock_configurqation = "{}"
 
 
 class TestCli:
@@ -33,8 +36,9 @@ class TestCli:
         assert pytest_wrapped_e_pseudo_name.type == SystemExit
         assert pytest_wrapped_e_pseudo_name.value.code == 1
 
+    @patch('configuration.configuration_parser.parse', return_value=mock_configurqation)
     @patch('tso.tsocli.command.cli_pipeline')
-    def test_cli_should_call_pipeline_when_successful(self, mock_pipeline):
+    def test_cli_should_call_pipeline_when_successful(self, mock_pipeline, mock_config_parser):
         tsocli.main([
             'schedule',
             '--start-date-time',
@@ -46,5 +50,16 @@ class TestCli:
         ])
 
         assert mock_pipeline.called
+
+    @patch('configuration.configuration_parser.parse', return_value=mock_configurqation)
+    @patch('tso.tsocli.command.cli_pipeline')
+    def test_cli_should_have_default_date_time_values(self, mock_pipeline, mock_config_parser):
+        tsocli.main([
+            'schedule',
+            '--export-to-file'
+        ])
+
+        assert mock_pipeline.call_args.start_date_time
+        assert mock_pipeline.call_args.end_date_time
 
 

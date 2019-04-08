@@ -24,8 +24,8 @@ class TestDataImporterIntegration:
     def test_observation_get_with_constraint(self):
         observations = data_importer.get_observations(
             db_config=get_db_config(),
-            min_priority=0,
-            remaining_observing_chances=MAX_SIZE/2,
+            max_observation_priority=0,
+            max_remaining_observing_chances=MAX_SIZE/2,
             observation_duration_min=-1,
             observation_duration_max=MAX_SIZE
         )

@@ -35,5 +35,12 @@
             "DB": "tso",
             "USER": "tsouser",
             "PASSWORD": "password"
+    },
+    "global_constraints": {
+        "AirmassConstraint": {
+            "max": 3,
+            "boolean_constraint": "False"
+        },
+        "AtNightConstraint": {}
     }
 }

@@ -12,6 +12,9 @@ import sys
 import argparse
 import os
 import json
+import datetime
+from sys import maxsize as MAX_SIZE
+
 
 from . import command as tso_command
 from configuration import configuration_parser
@@ -36,31 +39,42 @@ def initialize_sub_parser(sub_parser):
 def add_arguments(parser):
     parser.add_argument(
         "--config-file",
-        default="tso_config.json", 
+        default="tso_config.json",
         help="The local path to your runtime config file (See the included tso_config.json for an example of format)"
     )
     parser.add_argument(
         "--start-date-time",
-        help="The date time to begin the scheduling"
+        default=datetime.datetime.now().strftime("%Y-%m-%d %H:%M"),
+        help="The date time to begin the scheduling. Must be UTC. format - YYYY-MM-DD HH:mm"
     )
     parser.add_argument(
         "--end-date-time",
-        help="The date time to end the scheduling"
+        default=(datetime.datetime.now() + datetime.timedelta(days=7)).strftime("%Y-%m-%d %H:%M"),
+        help="The date time to end the scheduling. Must be UTC. format - YYYY-MM-DD HH:mm"
     )
     parser.add_argument(
-        "--program-priority",
-        help="The program priority to query against"
+        "--max-program-priority",
+        default=MAX_SIZE,
+        help="The maximum program priority to query against (1 is highest priority)"
     )
     parser.add_argument(
-        "--remaining-observing-chances",
+        "--max-observation-priority",
+        default=MAX_SIZE,
+        help="The maximum block priority to query against (1 is highest priority)"
+    )
+    parser.add_argument(
+        "--max-remaining-observing-chances",
+        default=MAX_SIZE,
         help="Include only those blocks whose remaining observing chances is less than this value"
     )
     parser.add_argument(
         "--observation-duration-min",
+        default=0,
         help="Include only those blocks whose duration is greater than or equal to this"
     )
     parser.add_argument(
         "--observation-duration-max",
+        default=MAX_SIZE,
         help="Include only those blocks whose duration is less than or equal to this"
     )
     parser.add_argument(
