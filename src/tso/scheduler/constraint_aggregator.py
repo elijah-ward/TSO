@@ -10,6 +10,7 @@ how far we are scheduling into the future
 time in the future
 """
 
+from .constraints import TsoOutageConstraint
 from astroplan.constraints import AtNightConstraint, AirmassConstraint
 
 
@@ -28,11 +29,16 @@ def create_at_night_constraint(*values):
     return AtNightConstraint.twilight_civil()
 
 
+def create_tso_outage_constraint(values):
+    return TsoOutageConstraint(outage_config=values)
+
+
 constraint_map = {
     "AirmassConstraint": create_air_mass_constraint,
-    "AtNightConstraint": create_at_night_constraint
+    "AtNightConstraint": create_at_night_constraint,
+    "TsoOutageConstraint": create_tso_outage_constraint
 
-    # TODO: Add more!
+    # TODO: Add more...?
 }
 
 

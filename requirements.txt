@@ -8,3 +8,4 @@ deap
 pandas
 requests
 mysql-connector-python
+numpy
