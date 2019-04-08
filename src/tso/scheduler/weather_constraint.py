@@ -33,8 +33,8 @@ class WeatherConstraint(Constraint):
 		
 		"""
 		today_date = datetime.utcnow().date()
-		start_datetime = datetime.strptime(start_time,'%Y-%d-%m %H:%M')
-		end_datetime = datetime.strptime(end_time, '%Y-%d-%m %H:%M')
+		start_datetime = datetime.strptime(start_time,'%Y-%m-%d %H:%M')
+		end_datetime = datetime.strptime(end_time, '%Y-%m-%d %H:%M')
 		start_date = start_datetime.date()
 		end_date = end_datetime.date()
 		delta = end_date - start_date
