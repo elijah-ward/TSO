@@ -19,6 +19,7 @@ class TsoOutageConstraint(Constraint):
 
     def __init__(self, outage_config=None):
         self.outage_config = outage_config if outage_config is not None else TsoOutageConstraint.default_outage_config()
+        print(self.outage_config)
 
     def compute_constraint(self, times, observer, targets):
         with warnings.catch_warnings():
@@ -27,7 +28,7 @@ class TsoOutageConstraint(Constraint):
             max_time = Time("2120-01-01T00:00:00")
 
         mask = True
-        for outage in self.outage_config.times:
+        for outage in self.outage_config.get('times', []):
             min_out_time = Time(outage.get("start")) if "start" not in outage else max_time
             max_out_time = Time(outage.get("end")) if "end" not in outage else min_time
 
