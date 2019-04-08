@@ -27,11 +27,13 @@ class TsoOutageConstraint(Constraint):
             min_time = Time("1950-01-01T00:00:00")
             max_time = Time("2120-01-01T00:00:00")
 
-        mask = True
+        masks = []
         for outage in self.outage_config.get('times', []):
-            min_out_time = Time(outage.get("start")) if "start" not in outage else max_time
-            max_out_time = Time(outage.get("end")) if "end" not in outage else min_time
+            min_out_time = Time(outage.get("start", max_time))
+            max_out_time = Time(outage.get("end", min_time))
 
             # if the time is OUTSIDE of the given range, it is valid
-            mask = mask and np.logical_and(times < min_out_time, times > max_out_time)
-        return mask
+            masks.append(np.logical_not(np.logical_and(times > min_out_time, times < max_out_time)))
+
+        masks__any = np.array(masks).all(axis=0)
+        return masks__any
