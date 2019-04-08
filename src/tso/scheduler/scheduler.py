@@ -33,7 +33,14 @@ def create_transitioner(slew_rate, filter_config):
     return Transitioner(slew_rate, filters)
 
 
-def generate_schedule(config, global_constraint_configuration, start_datetime, end_datetime, requests=None):
+def generate_schedule(
+    config,
+    global_constraint_configuration,
+    start_datetime,
+    end_datetime,
+    no_weather_constraints=False,
+    requests=None
+):
 
     # Sometimes a warning arises called OldEarthOrientationDataWarning which means the following line must run to refresh
     # we should find a way to catch this warning and only download when necessary
@@ -43,8 +50,12 @@ def generate_schedule(config, global_constraint_configuration, start_datetime, e
     transitioner = create_transitioner(config['slew_rate'], config['filters'])
 
     # Retrieve global constraints from Constraint Aggregator
+
     global_constraints = ca.initialize_constraints(
-        global_constraint_configuration
+        global_constraint_configuration,
+        start_datetime,
+        end_datetime,
+        no_weather_constraints
     )
 
     # hardcoded but should come from block

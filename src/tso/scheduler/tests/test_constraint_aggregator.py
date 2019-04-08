@@ -22,12 +22,22 @@ class TestConstraintAggregator:
 
     def test_should_map_correct_(self):
 
-        mapped_constraints = constraint_aggregator.initialize_constraints(mock_constraint_config)
+        mapped_constraints = constraint_aggregator.initialize_constraints(
+            mock_constraint_config,
+            "2019-03-01 19:00",
+            "2019-03-12 19:00",
+            True
+        )
 
         assert len(mapped_constraints) is 2
 
     def test_should_handle_invalid_names(self):
 
-        mapped_constraints = constraint_aggregator.initialize_constraints(mock_invalid_constraint_config)
+        mapped_constraints = constraint_aggregator.initialize_constraints(
+            mock_invalid_constraint_config,
+            "2019-03-01 19:00",
+            "2019-03-12 19:00",
+            True
+        )
 
         assert len(mapped_constraints) is 0

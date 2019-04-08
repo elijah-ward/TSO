@@ -71,7 +71,7 @@ class TestScheduler(object):
             mock_global_constraint_config,
             start_datetime,
             end_datetime,
-            requests
+            requests=requests
         )
         assert isinstance(schedule, Schedule)
 

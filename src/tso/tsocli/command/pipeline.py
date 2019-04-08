@@ -36,6 +36,7 @@ def cli_pipeline(args, config):
         config.get_global_constraint_config(),
         args.start_date_time,
         args.end_date_time,
+        args.no_weather_constraints,
         tso_observation_requests if True else mock_requests  # Set to False to use the mock_requests
     )
 
