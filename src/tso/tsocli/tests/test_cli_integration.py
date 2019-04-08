@@ -6,7 +6,7 @@ from unittest.mock import patch
 
 @pytest.fixture(scope="module")
 def run_end_to_end():
-    return False
+    return True 
 
 
 class TestCliIntegration:
@@ -26,9 +26,9 @@ class TestCliIntegration:
         arguments = [
             'schedule',
             '--start-date-time',
-            '2019-03-01 19:00',
+            '2019-04-07 17:00',
             '--end-date-time',
-            '2019-03-12 19:00',
+            '2019-04-7 23:00',
             '--export-to-file',
             '--export-to-browser',
             '--config-file',

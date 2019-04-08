@@ -11,10 +11,11 @@ time in the future
 """
 
 from astroplan.constraints import AtNightConstraint, AirmassConstraint
+from tso.scheduler.weather_constraint import WeatherConstraint
 
 
-def initialize_constraints():
+def initialize_constraints(start_datetime, end_datetime):
     global_constraints = [AirmassConstraint(max=3, boolean_constraint=False),
-                          AtNightConstraint.twilight_civil()]
+                          AtNightConstraint.twilight_civil(), WeatherConstraint(start_datetime, end_datetime)]
 
     return global_constraints
