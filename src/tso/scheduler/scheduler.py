@@ -34,7 +34,7 @@ def create_transitioner(slew_rate, filter_config):
 
 
 def generate_schedule(
-    config,
+    telescope_config,
     global_constraint_configuration,
     start_datetime,
     end_datetime,
@@ -43,11 +43,11 @@ def generate_schedule(
 ):
 
     # Sometimes a warning arises called OldEarthOrientationDataWarning which means the following line must run to refresh
-    # we should find a way to catch this warning and only download when necessary
+    # should find a way to catch this warning and only download when necessary
 
     download_IERS_A()
     cfht = Observer.at_site('cfht')
-    transitioner = create_transitioner(config['slew_rate'], config['filters'])
+    transitioner = create_transitioner(telescope_config['slew_rate'], telescope_config['filters'])
 
     # Retrieve global constraints from Constraint Aggregator
 
@@ -58,20 +58,20 @@ def generate_schedule(
         no_weather_constraints
     )
 
-    # hardcoded but should come from block
-    read_out = 20 * u.second
+    # Currently defined in config but may belong on the block-level instead
+    read_out = telescope_config['read_out'] * u.second
+
+    # TODO: gather this data from each ObservationRequest instead
     n_exp = 5
 
     blocks = []
 
-    # Hardcoded test constraints -- may have some on the ObservingBlock level
-    # These differ from global_constraints above which are applied to all observations in the schedule
-
-    # half_night_start = Time('2019-03-12 02:00')
-    # half_night_end = Time('2019-03-12 08:00')
-    # first_half_night = TimeConstraint(half_night_start, half_night_end)
+    # In order to supply block-level constraints, they should be initialized from attributes of the source data
+    # and passed into the ObservingBlock initialization below
 
     for request in requests:
+        # For each filter available on the telescope
+        # TODO: define the available set within config
         for bandpass in ['B', 'G', 'R']:
             block = ObservingBlock.from_exposures(
                 request.target,
