@@ -50,6 +50,11 @@
                     "end": "2018-04-09 19:00"
                 }
             ]
+        },
+        "WeatherConstraint": {
+            "cloud_threshold": 50.0,
+            "cloud_average_threshold": 40.0,
+            "rain_threshold": 15.0
         }
     }
 }

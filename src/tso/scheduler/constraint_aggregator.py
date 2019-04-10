@@ -33,7 +33,10 @@ def create_at_night_constraint(*values):
 def create_weather_constraint(values):
     return WeatherConstraint(
         start_time=values.get("start_datetime"),
-        end_time=values.get("end_datetime")
+        end_time=values.get("end_datetime"),
+        cloud_threshold=values.get("cloud_threshold"),
+        cloud_average_threshold=values.get("cloud_average_threshold"),
+        rain_threshold=values.get("rain_threshold")
     )
 
 
