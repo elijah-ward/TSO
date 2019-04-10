@@ -19,7 +19,9 @@ class TsoOutageConstraint(Constraint):
 
     def __init__(self, outage_config=None):
         self.outage_config = outage_config if outage_config is not None else TsoOutageConstraint.default_outage_config()
-        print(self.outage_config)
+        for outage in self.outage_config.get('times', []):
+            if "start" in outage and "end" in outage:
+                print('NOTE: Scheduled outage is configured for the period of {} to {}'.format(outage.get("start"), outage.get("end")))
 
     def compute_constraint(self, times, observer, targets):
         with warnings.catch_warnings():
