@@ -3,8 +3,6 @@ from tso.importer.weather_importer import WeatherImporter as WeImp
 from astroplan import Constraint
 from datetime import datetime, timedelta, timezone
 
-#TODO: Make this class inherit from our Dynamic_Constraint class?
-
 class WeatherConstraint(Constraint):
     """Custom constraint to check if weather conditions are sufficiently good
 
