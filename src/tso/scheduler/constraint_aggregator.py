@@ -57,6 +57,9 @@ def initialize_constraints(constraint_configuration, start_datetime, end_datetim
         if 'WeatherConstraint' in constraint_configuration:
             constraint_configuration['WeatherConstraint']['start_datetime'] = start_datetime
             constraint_configuration['WeatherConstraint']['end_datetime'] = end_datetime
+    else:
+        if 'WeatherConstraint' in constraint_configuration:
+            del constraint_configuration['WeatherConstraint']
     global_constraints = []
     for key, value in constraint_configuration.items():
         mapped_c = constraint_map.get(key, create_unmapped_constraint)(value)
