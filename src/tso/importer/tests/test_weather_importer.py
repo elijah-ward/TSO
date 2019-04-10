@@ -9,12 +9,12 @@ class TestWeatherImporter():
 		assert weather[0] == "Volcano"
 
 	def test_current_weather(self):
-		weather = WeatherImporter.getWeather()
+		weather = WeatherImporter.getWeather(days=0)
 		assert len(weather) == 5
 
 	def test_current_weather_info(self):
 		conditions = ['Thunderstorm', 'Drizzle', 'Rain', 'Snow', 'Atmosphere', 'Clear', 'Clouds']
-		weather = WeatherImporter.getWeather()
+		weather = WeatherImporter.getWeather(days=0)
 		assert weather[1] in conditions
 		assert isinstance(weather[3],int)
 		assert isinstance(weather[4], float)
