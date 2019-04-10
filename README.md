@@ -51,6 +51,7 @@ In the current state, the necessary configuration file looks like this:
 {
     "telescope": {
         "slew_rate": 0.8,
+        "read_out": 20,
         "filters": {
             "transitions": {
                 "default": 30,

@@ -10,6 +10,7 @@ N_BLOCKS = 5
 
 testSchedulerConfig = json.loads(u'''{
     "slew_rate": 0.8,
+    "read_out": 20,
     "filters": {
         "transitions": {
             "default": 30,
