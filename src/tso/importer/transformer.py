@@ -12,6 +12,16 @@ import json
 
 
 def validate_block(block):
+    """This function will insure that an incoming value is an instance of a CFHT
+    observation block. 
+    
+    Args:
+        block (CFHTObservationBlock): An observation request entailed in a CFHT
+        block
+    
+    Returns:
+        TYPE: True if argument passed is a CFHTObservationBlock False otherwise
+    """
     valid = True
 
     # Check if the incoming value is an instance of CFHTObservationBlock
@@ -29,6 +39,17 @@ def validate_block(block):
 
 
 def block_to_request(block):
+    """Summary: Converts a CFHT block into an intrnal data messaget that can be 
+    used for scheduling.
+    
+    Args:
+        block (CFHTObservationBlock): Description: Maps a validated 
+        CFHTObservationBlock to and Observation request which will eventually be
+        used for scheduling
+    
+    Returns:
+        TYPE:ObservationRequest
+    """
     mapped_sky_address = SkyCoord(
         ra=float(block.sky_address.split(',')[0]),
         dec=float(block.sky_address.split(',')[1]),
@@ -53,7 +74,8 @@ def transform_cfht_observing_blocks(cfht_observing_blocks):
     Convert a list of CFHT blocks to our Internal use
 
     :param cfht_observing_blocks: The list of blocks to be transformed
-    :return:
+    :return: The list of blocks converted to ObservationRequest if they 
+    are valid CFHT blocks. 
     """
 
     return [block_to_request(b) for b in cfht_observing_blocks if validate_block(b)]
