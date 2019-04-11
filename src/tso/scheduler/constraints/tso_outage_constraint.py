@@ -24,6 +24,16 @@ class TsoOutageConstraint(Constraint):
                 print('NOTE: Scheduled outage is configured for the period of {} to {}'.format(outage.get("start"), outage.get("end")))
 
     def compute_constraint(self, times, observer, targets):
+        """
+        Implementation of the Constraint interface.
+        The processing within this method will first determine those blocks that DO NOT fall within an outtage time.
+        Those who do will return false for the given times input array.
+
+        :param times: the times of the scheduling blocks
+        :param observer: the observer object
+        :param targets: the targets being observed
+        :return: an array matching the dimensions of times that determines whether it is observable or not.
+        """
         with warnings.catch_warnings():
             warnings.simplefilter('ignore')
             min_time = Time("1950-01-01T00:00:00")

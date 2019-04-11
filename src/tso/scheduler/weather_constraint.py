@@ -64,7 +64,7 @@ class WeatherConstraint(Constraint):
             try:
                 assert weatherInfo[0] == 'Volcano', "Incorrect location, please try again"
             except AssertionError as e:
-                print(e)
+                if False: print(e)
 
             # If weather is clear, observation is possible
             if weatherInfo[1] == 'Clear':

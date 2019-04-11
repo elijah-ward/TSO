@@ -1,10 +1,14 @@
 """
 Generate Test Data
 
-Two main uses.
+This is meant to generate test values for use within the Data Importer.
+To run there are 2 main modes.
 Producing the mock data...
     1. ...as a standalone SQL script (useful for interfacing with the DockerFile
     2. ...as data sent through mysql with the mysql-connector library
+
+You must also prove a variable N as the last arg.
+N will determine how many observation blocks will be generated from this module.
 """
 
 import random

@@ -6,6 +6,8 @@ The initial configuration into this file is through the projects setup.py
 
 This is meant to be as minimal as possible.
 With other functions in this module as primary containers of the complexity
+
+This module conforms to python argeparse library for handling CLI interactions.
 """
 
 import sys
@@ -21,6 +23,13 @@ from configuration import configuration_parser
 
 
 def initialize_sub_parser(sub_parser):
+    """
+    Currently, TSOCLI supports a single subcommand called "schedule"
+    This represents the command for generating a schedule living in the CFHT Type 2 database.
+
+    :param sub_parser: the sub parser object from the main function
+    :return: the final scheduling CLI parser
+    """
     schedule_parser = sub_parser.add_parser(
         "schedule",
         aliases=['s'],
@@ -37,6 +46,13 @@ def initialize_sub_parser(sub_parser):
 
 
 def add_arguments(parser):
+    """
+    These are all the arguments currently supported by TSO.
+    This is specified to the single "schedule" sub command that exists.
+
+    :param parser: the schedule sub-parser to add the arguments to
+    :return: None
+    """
     parser.add_argument(
         "--config-file",
         default="tso_config.json",
@@ -95,6 +111,15 @@ def add_arguments(parser):
 
 
 def main(sys_args=None):
+    """
+    Main CLI configuration and execution
+
+    This module makes use of the sub module called the CLI Pipeline.
+    This module however, acts primarily as our python.argeparse configuration
+
+    :param sys_args: the list of args - used for testing the CLI
+    :return: None
+    """
     if sys_args is None:
         sys_args = sys.argv[1:]
 
