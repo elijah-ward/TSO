@@ -21,6 +21,20 @@ tso_epilog = """\n\n
 
 
 def cli_pipeline(args, config):
+    """
+    The CLI pipeline defines the main processing orchestrator for TSO.
+    The following is a sample execution step:
+    1. User executes through the CLI
+    2. CLI invokes the CLI Pipeline with the supplied arguments
+    3. Pipeline Calls the Data Importer with forwarded args
+    4. Data importer output is fed into the Transformer to utilize the TSO context (and not the CFHT context)
+    5. TSO context data is fed to the Scheduler for final processing
+    6. Final resulting scheduler is fed to the Exporter for final consumer export
+
+    :param args: the args from the cli
+    :param config: the configuration file (see {root}/tso_config.json
+    :return: None
+    """
     print(tso_epilog)
 
     cfht_imported_data = data_importer.get_observations_with_args(

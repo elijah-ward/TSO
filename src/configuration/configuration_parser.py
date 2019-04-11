@@ -20,7 +20,6 @@ def parse(conf_filepath, root_path=None):
         current_dir = root_path
 
     file_location = '{}/{}'.format(current_dir, conf_filepath)
-    print(file_location)
 
     with open(file_location, 'r') as f:
         config = json.load(f)

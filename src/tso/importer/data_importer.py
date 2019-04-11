@@ -15,6 +15,16 @@ def convert_to_cfht(
     max_program_priority=MAX_SIZE,
     exposure_count_data={}
 ):
+    """Summary: Takes data from the observations Database and transforms 
+    it to the current CFHT data model. This replicated the current CFHT process
+    
+    Args:
+        values (rows of Observation data from database as alist): 
+        max_program_priority (int, optional): the priority of the program 
+        who generated the request. Defaults to lowes priority
+        exposure_count_data (json, optional): Exposure information required to 
+        calculate the number of exposures
+    """
     observation_blocks = []
     for line_values in values:
 
@@ -34,11 +44,20 @@ def convert_to_cfht(
 
 
 def get_all_observations(db_config=None):
-    """
-    Retrieve all observation_blocks found in persistence.
-    Potentially dangerous if a large amount of entries exist
 
-    :return: All observations in TSO persistence
+    """
+    Summary "Retrieve all observation_blocks found in persistence.
+    Potentially dangerous if a large amount of entries exist
+    
+    
+    Args:
+        db_config (Dict, optional): Database connection info
+    
+    Returns:
+        CFHT_observation_block: all observations in TSO persistence
+    
+    Raises:
+        RuntimeError: Data information does not exist
     """
 
     if db_config is None:
@@ -56,6 +75,20 @@ def get_all_observations(db_config=None):
 
 
 def get_observations_with_args(db_config=None, **kwargs):
+    """Summary: imports data from database, restricting the data based on arguments
+    passed.  
+    
+    Args:
+        db_config (Dict, optional): Description
+        **kwargs: variable number of constraints on database row retrieved
+        This includes limiting data retrival based on max priorty, program priority, 
+        remaining obseration chances, obseration duration min/max.
+    Returns:
+        TYPE: rows of observations that meet the criteria
+    
+    Raises:
+        RuntimeError: No configuration file
+    """
     if db_config is None:
         raise RuntimeError("Error :: Cannot import without database configuration")
 
@@ -78,9 +111,20 @@ def get_observations(
     observation_duration_max=MAX_SIZE
 ):
     """
-    Get CFHT observation blocks with given constraints.
+    Summary:Get CFHT observation blocks with given constraints.
     The default values allow for the maximal amount of requests to be returned,
     or in other words, the default values provide the same functionality
+    
+    Args:
+        db_config (Dict, optional): DAtabase configuration info
+        max_observation_priority (Int, optional): priority of obserations
+        max_program_priority (Int, optional): priority of program
+        max_remaining_observing_chances (Int, optional): remaining observation
+        opportunities
+        observation_duration_min (int, optional): the lowest time required for 
+        observation
+        observation_duration_max (int, optional): the largest amount of time for
+        observations
     """
     if db_config is None:
         raise RuntimeError("Error :: Cannot import without database configuration")
@@ -105,10 +149,19 @@ def get_observations(
 
 
 def get_exposure_counts_per_observation_id(db_config=None):
-    """
-    Get Exposure Counts Per Observation Id
 
-    :return dict with schema -> { observationId: exposureCount }
+    """
+    Summary: Get Exposure Counts Per Observation Id
+    
+    
+    Args:
+        db_config (Dict, optional): Description of DB configuration
+    
+    Returns:
+        dict: with schema -> { observationId: exposureCount }
+    
+    Raises:
+        RuntimeError: No configuration provided
     """
 
     if db_config is None:
