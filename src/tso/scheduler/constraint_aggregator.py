@@ -15,6 +15,8 @@ from astroplan.constraints import AtNightConstraint, AirmassConstraint
 from tso.scheduler.weather_constraint import WeatherConstraint
 
 
+
+
 def create_unmapped_constraint(*values):
     return None
 
@@ -29,8 +31,23 @@ def create_air_mass_constraint(values):
 def create_at_night_constraint(*values):
     return AtNightConstraint.twilight_civil()
 
+  
+
 
 def create_weather_constraint(values):
+    """Initialiazes the weather constraint 
+
+    Parameters
+    ----------
+    values:
+    contains the start datetime and end datetime required to initialize the weather constraint
+
+    Returns:
+    --------
+    An initialized weather constraint for the given time values
+
+
+    """  
     return WeatherConstraint(
         start_time=values.get("start_datetime"),
         end_time=values.get("end_datetime"),
@@ -38,6 +55,7 @@ def create_weather_constraint(values):
         cloud_average_threshold=values.get("cloud_average_threshold"),
         rain_threshold=values.get("rain_threshold")
     )
+
 
 
 def create_tso_outage_constraint(values):
@@ -51,7 +69,21 @@ constraint_map = {
     "WeatherConstraint": create_weather_constraint
 }
 
+"""Initializes all the necessary constraints as specified by the user
 
+    Parameters:
+    ----------
+    constraint_configuration:
+    contains all necessary data for constraint initialization
+    start_datetime:
+    Datetime object that indicates the beginning of the schedule
+    end_time: 
+    Datetime object that indicates the finalizaion of the schedule
+    no_weather_constraint:
+    Boolean that specifies if the weather constraint should be considered or not
+
+
+"""
 def initialize_constraints(constraint_configuration, start_datetime, end_datetime, no_weather_constraints):
     if not no_weather_constraints:
         if 'WeatherConstraint' in constraint_configuration:

@@ -3,6 +3,11 @@ from datetime import datetime, timedelta, timezone
 from pytz import timezone
 from astropy.table import Table
 
+"""
+Weather Importer
+
+Imports all necessary data from a third party weather API
+"""
 
 class WeatherImporter():
 
@@ -141,12 +146,6 @@ class WeatherImporter():
             print('\n\t\t--- WEATHER SUMMARY ---\n', weatherTable, '\n')
             return weatherInfo
 
-
-
-#conditions = ['Thunderstorm', 'Drizzle', 'Rain', 'Snow', 'Atmosphere', 'Clear', 'Clouds']
-# weather = WeatherImporter.getWeather(days=5)
-# print(weather)
-#   print ("n = " + str(n) + " Length = " + str(len(weather)))
 
 
 

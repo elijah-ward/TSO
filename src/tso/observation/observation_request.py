@@ -1,6 +1,11 @@
 from astropy.coordinates import SkyCoord, Angle
 from astroplan import FixedTarget
 
+"""
+Observation Request
+
+Creates an observation request, that follows the internal TSO model
+"""
 
 class ObservationRequest:
 

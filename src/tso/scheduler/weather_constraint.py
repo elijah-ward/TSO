@@ -3,28 +3,13 @@ from tso.importer.weather_importer import WeatherImporter as WeImp
 from astroplan import Constraint
 from datetime import datetime, timedelta, timezone
 
+"""
+Weather Constraint
+
+ Determines if it is possible to observe with regards to the current weather conditions
+"""
+
 class WeatherConstraint(Constraint):
-    """Custom constraint to check if weather conditions are sufficiently good
-
-    Dynamic constraint that checks current weather conditions at runtime and determines
-    how favourable these conditions are for observing
-
-    Attributes
-    ----------
-    location: str
-        Attribute that determines current location of weather report.
-        Used primarily for error checking
-    condition: str
-        Current meteorological condition. E.g. Cloudy, Clear, Rainy etc...
-    visibility: int
-        Current location's visibility distance. Given in meters
-    humidity: int
-        Current humidity levels at current location
-    coverage: float
-        Current cloud coverage.
-
-
-    """
 
     def __init__(self, start_time, end_time, cloud_threshold, cloud_average_threshold, rain_threshold):
         """Custom dynamic constraint that evaluates current weather conditions
@@ -54,7 +39,22 @@ class WeatherConstraint(Constraint):
 
 
     def compute_constraint(self,times,observer,targets):
-        """
+        """Computes whether the TSO observation blocks are observable due to current weather
+
+        Parameters
+        ----------
+        times: array of datetimes 
+            Each elemt in the array corresponds to an observation block
+        observer: Astroplan observe object
+            Specifies where the celestial targets are being observed from
+        targets: 
+            Targets being observed.
+
+        Returns
+        -------
+        list:
+            List of boolenas, where each element corresponds to an observation block. It specifies if
+            weather conditions are sufficient enough for observation during those times.
 
         """
         # Check if schedule is only for current day
@@ -116,17 +116,7 @@ class WeatherConstraint(Constraint):
 
 
 
-
-
-        #TODO: High humidity may also have an effect on viewing capabilities
-        # considering expanding this constraint to accomodate this fact
-
-
-#Simple smoke test. Robust tests incoming
-
-start_time = "2019-07-04 19:00"
-end_time = "2019-07-04 23:00"
-constraint = WeatherConstraint(start_time, end_time, 50.0, 40.0, 15.0)
+   
 
 
 
